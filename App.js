@@ -1,60 +1,37 @@
-import { View, StyleSheet } from 'react-native';
-import HomePage from './components/Home/HomePage';
-import Scanner from './components/Scanner/Scanner';
-import { useEffect, useState } from 'react';
-import TopNavbar from './components/Home/TopNavbar';
-import BottomNavbar from './components/Home/BottomNavbar';
-import axios from 'axios';
+
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import MainScreen from './src/screens/MainScreen';
+import withAuth from './withAuth';
+import TopNavbar from './src/components/Home/TopNavbar';
+import LoginScreen from './src/screens/LoginScreen';
+
+const Stack = createStackNavigator();
 
 export default function App() {
-  const [code, setCode] = useState('');
-  const [stopScanner, setScannerClose] = useState(true);
-  const [resData, setResData] = useState('');
+  // const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    if (code) {
-      axios
-        .get('https://apibdexpresscargo.xyz/api/v1')
-        .then((response) => {
-          setResData(response?.data?.msg);
-        })
-        .catch((error) => {
-          console.log(error);
-          setResData('Sorry! Something want wrong!');
-        });
-    } else {
-      setResData('Please Wait....');
-    }
-  }, [code]);
+
+
+// useEffect(() => {
+//     // Simulate loading time
+//     setTimeout(() => {
+//       setIsLoading(false);
+//     }, 3000);
+//   }, []);
+
+  
 
   return (
-    <>
-      <View>
-        <TopNavbar></TopNavbar>
-      </View>
-      <View style={{ paddingLeft: 20, paddingRight: 20 }}>
-        <HomePage code={code} resData={resData}></HomePage>
-      </View>
-      {stopScanner || <Scanner setCode={setCode} code={code}></Scanner>}
-
-      <View style={styles.Bottomcontainer}>
-        <BottomNavbar
-          setScannerClose={setScannerClose}
-          stopScanner={stopScanner}
-        ></BottomNavbar>
-      </View>
-    </>
+    
+    <NavigationContainer>
+      <TopNavbar></TopNavbar>
+     <Stack.Navigator >
+        <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }}/>
+        <Stack.Screen name="Home" component={withAuth(MainScreen)} options={{ headerShown: false }} />
+      </Stack.Navigator>
+  </NavigationContainer>
   );
 }
 
-const styles = StyleSheet.create({
-  Bottomcontainer: {
-    position: 'absolute',
-    bottom: 0,
-    backgroundColor: '#00aeef',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    width: '100%',
-  },
-});
+
