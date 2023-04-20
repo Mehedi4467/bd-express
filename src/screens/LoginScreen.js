@@ -1,16 +1,15 @@
 import React, { useState } from 'react';
 import { ActivityIndicator, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import {APP_TOKEN,APP_AUTHOR} from '@env'
 import { loginApi } from '../api/Auth/login';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useNavigation } from '@react-navigation/native';
 
-const LoginScreen = () => {
+
+const LoginScreen = ({gobalLoader,setGobalLoader}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 const [error,setError]=useState('');
 const [loading,setLoaing]=useState(false);
-const navigation = useNavigation();
+// const navigation = useNavigation();
 
   const handleLogin = async() => {
     setLoaing(true);
@@ -26,7 +25,8 @@ const navigation = useNavigation();
         try {
           await AsyncStorage.setItem('user', JSON.stringify(log?.data));
           // console.log('User data stored successfully');
-          navigation.navigate('Home')
+          // navigation.navigate('Home')
+          setGobalLoader(!gobalLoader)
         } catch (e) {
           // console.log('Failed to store user data', e);
           setError('Something want wrong')

@@ -1,19 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { NavigationContainer, useIsFocused, useNavigation } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
 
 import LoadingScreen from './src/screens/LoadingScreen';
 import { verifyUser } from './src/api/Auth/auth';
+import LoginScreen from './src/screens/LoginScreen';
 
 
-const Stack = createStackNavigator();
+
 const withAuth = (Component) => {
   const AuthenticatedComponent = (props) => {
+    // console.log(props)
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
-    const navigation = useNavigation();
-    const isFocused = useIsFocused();
+
 
     useEffect(() => {
       const checkAuthentication = async () => {
@@ -58,8 +57,9 @@ const withAuth = (Component) => {
       //   </NavigationContainer>
       //   <LoginScreen></LoginScreen>
       // );
-  //  navigation.navigate('Home')
-   return  navigation.navigate('Login');
+   return  <Stack.Screen name="Login" component={LoginScreen} />
+  // return null
+
     }
     return <Component {...props} />;
   };

@@ -6,6 +6,7 @@ import Scanner from '../components/Scanner/Scanner';
 
 
 export default function MainScreen() {
+
   const [code, setCode] = useState('');
   const [stopScanner, setScannerClose] = useState(true);
   const [resData, setResData] = useState('');

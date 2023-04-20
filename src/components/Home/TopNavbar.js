@@ -2,17 +2,20 @@ import React from 'react';
 import { View, Image, Text, StyleSheet } from 'react-native';
 import logo from '../../assets/logo.png';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { useNavigation } from '@react-navigation/native';
+// import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import LoginScreen from '../../screens/LoginScreen';
 
 
-export default function TopNavbar() {
-  const navigation = useNavigation();
+export default function TopNavbar({gobalLoader,setGobalLoader}) {
+  // const navigation = useNavigation();
   const logOut= async()=>{
     try {
           await AsyncStorage.removeItem('user');
-          // console.log('Item removed successfully');
-          navigation.navigate('Login')
+          console.log('Item removed successfully');
+          // navigation.navigate('Login')
+          // <LoginScreen></LoginScreen>
+          setGobalLoader(!gobalLoader)
         } catch (e) {
           // console.log('Error removing item:', e);
         }
