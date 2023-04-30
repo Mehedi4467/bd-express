@@ -14,6 +14,7 @@ import { useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { verifyUser } from './src/api/Auth/auth';
 import LoadingScreen from './src/screens/LoadingScreen';
+import Shipment from './src/screens/Shipment';
 
 const Stack = createNativeStackNavigator();
 // const Stack = createStackNavigator();
@@ -37,7 +38,7 @@ const [gobalLoader,setGobalLoader]=useState(false);
 useEffect(() => {
   const checkAuthentication = async () => {
     const x = await AsyncStorage.getItem('user');
-    const userInfo = JSON.parse(x)
+    const userInfo = JSON.parse(x);
 
     if(userInfo){
      const verify = await verifyUser(userInfo?.user, userInfo?.access_token);
@@ -77,14 +78,15 @@ if(isLoading){
       <NavigationContainer>
       <TopNavbar setGobalLoader={setGobalLoader} gobalLoader={gobalLoader}></TopNavbar>
       {
-        auth ?  <Stack.Navigator >
+        auth ?  
+        <Stack.Navigator >
         <Stack.Screen name="Home" component={MainScreen}  options={{ headerShown: false }} /> 
-      </Stack.Navigator> : <Stack.Navigator >
-        {/* <Stack.Screen name="Home" component={withAuth(MainScreen)} options={{ headerShown: false }} /> */}
+        <Stack.Screen name="Shipment" component={Shipment}  options={{ headerShown: false }} /> 
+      </Stack.Navigator> 
+      : <Stack.Navigator >
         <Stack.Screen name="Login" component={(props) => <LoginScreen {...props} gobalLoader={gobalLoader} setGobalLoader={setGobalLoader} />}  options={{ headerShown: false }}/>
       </Stack.Navigator>
       }
-    
       </NavigationContainer>
 
   </View>

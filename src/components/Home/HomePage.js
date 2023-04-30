@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { View,Text, TextInput, Button, StyleSheet, TouchableOpacity } from 'react-native';
 
-const HomePage = ({inputCode,setUnputCode,finalCode,setFinalCode}) => {
+const HomePage = ({setCode,code}) => {
   const [selectedOption, setSelectedOption] = useState(null);
   const [checkID,setCheckId]=useState('');
-
+  const [inputCode,setInputCode]=useState(code || '');
   // console.log('check',finalCode.length <=0 ?checkID : finalCode[checkID]);
 
 
@@ -13,12 +13,12 @@ const HomePage = ({inputCode,setUnputCode,finalCode,setFinalCode}) => {
     // console.log(inputCode);
   }
 
-const handleArrayUpdate=(value,index)=>{
+// const handleArrayUpdate=(value,index)=>{
 
-const newArray = [...finalCode];
-newArray[index] = value; 
-setFinalCode(newArray);
-  }
+// const newArray = [...finalCode];
+// newArray[index] = value; 
+// setFinalCode(newArray);
+//   }
 
   const handleOptionPress = (option,value) => {
     setSelectedOption(option);
@@ -28,21 +28,19 @@ setFinalCode(newArray);
 
   return (
     <View style={styles.container}>
-      {/* {
-        finalCode.map((item,index)=>
+     
         <TextInput 
-        key={index}
+    
         style={styles.input}
-        onChangeText={(value)=>handleArrayUpdate(value,index)}
-        // onChange={(e)=>handleArrayUpdate(e.target.value,index)}
-        value={finalCode[index]}
+        onChangeText={(value)=>setInputCode(value)}
+        // onChange={(value)=>setInputCode(value)}
+        value={inputCode}
         placeholder="Enter Bar Code"
       />
-      )
-      } */}
+     
 
 
-{
+{/* {
 
 finalCode.length <=0 ? <TextInput 
 style={styles.input}
@@ -66,7 +64,7 @@ finalCode.map((item,index)=>
 </View>
 
 </View>)
-}
+} */}
 
 
 

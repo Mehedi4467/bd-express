@@ -4,13 +4,21 @@ import logo from '../../assets/logo.png';
 import Icon from 'react-native-vector-icons/FontAwesome';
 // import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import LoginScreen from '../../screens/LoginScreen';
+import { useNavigation } from '@react-navigation/native';
+import { logOutApi } from '../../api/Auth/logout';
+
 
 
 export default function TopNavbar({gobalLoader,setGobalLoader}) {
-  // const navigation = useNavigation();
+  const navigation = useNavigation();
+
   const logOut= async()=>{
-    try {
+    const x = await AsyncStorage.getItem('user');
+    const userInfo = JSON.parse(x);
+    if(userInfo){
+      const verify = await logOutApi(userInfo?.user, userInfo?.access_token);
+      if(verify?.status){
+        try {
           await AsyncStorage.removeItem('user');
           console.log('Item removed successfully');
           // navigation.navigate('Login')
@@ -19,12 +27,17 @@ export default function TopNavbar({gobalLoader,setGobalLoader}) {
         } catch (e) {
           // console.log('Error removing item:', e);
         }
+      }
+    }
+
+
+   
   }
 
   return (
     <View style={styles.logoContainer}>
-       <Icon  name="arrow-left" size={20} color="black" />
-       {/* <Icon onPress={()=>navigation.goBack()} name="arrow-left" size={20} color="black" /> */}
+       {/* <Icon  name="arrow-left" size={20} color="black" /> */}
+       <Icon onPress={()=>navigation.goBack()} name="arrow-left" size={20} color="black" />
 
       <Image source={logo} style={styles.logo} />
      

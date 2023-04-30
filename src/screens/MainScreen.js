@@ -5,15 +5,11 @@ import BottomNavbar from '../components/Home/BottomNavbar';
 import Scanner from '../components/Scanner/Scanner';
 
 
-export default function MainScreen() {
+export default function MainScreen({navigation}) {
 
   const [code, setCode] = useState('');
   const [stopScanner, setScannerClose] = useState(true);
-  const [resData, setResData] = useState('');
-  const [inputCode, setUnputCode] = useState('');
-  const [finalCode,setFinalCode]=useState([]);
-
-
+  const [inputCode,setInputCode]=useState('');
 
 
 
@@ -26,16 +22,14 @@ export default function MainScreen() {
   useEffect(()=>{
     if(code){
       handleVibrate();
-      // setScannerClose(true);
-      setUnputCode(code);
+      setScannerClose(true);
+      setInputCode(code);
     }
   },[code])
 
   useEffect(()=>{
     if(!stopScanner){
-      setUnputCode('');
       setCode('');
-      setFinalCode([]);
     }
   },[stopScanner]);
 
@@ -43,13 +37,14 @@ export default function MainScreen() {
   return (
    <>
       {stopScanner ? <View style={{ paddingLeft: 20, paddingRight: 20}}>
-        <HomePage inputCode={inputCode} setFinalCode={setFinalCode} finalCode={finalCode} setUnputCode={setUnputCode}></HomePage>
-      </View> : <Scanner setScannerClose={setScannerClose}   setFinalCode={setFinalCode} finalCode={finalCode} setCode={setCode} code={code}></Scanner>}
+        <HomePage code={code} setCode={setCode} inputCode={inputCode} setInputCode={setInputCode}></HomePage>
+      </View> : <Scanner setScannerClose={setScannerClose}  setCode={setCode} code={code}></Scanner>}
 
       <View style={styles.Bottomcontainer}>
         <BottomNavbar
           setScannerClose={setScannerClose}
           stopScanner={stopScanner}
+          navigation={navigation}
         ></BottomNavbar>
       </View>
 

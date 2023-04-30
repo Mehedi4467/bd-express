@@ -1,15 +1,29 @@
 import React from 'react';
-import { View, Image, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Image, Text, StyleSheet, TouchableOpacity, ToastAndroid } from 'react-native';
 import logo from '../../assets/scanner.jpg';
+import { auxDataApi } from '../../api/Shipment/VerifyShipment';
 
-export default function BottomNavbar({ setScannerClose, stopScanner }) {
-  const handlePress = () => {
-    setScannerClose(!stopScanner);
+export default function BottomNavbar({ setScannerClose, stopScanner,navigation }) {
+
+  const showToast = (s) => {
+    ToastAndroid.show(s, ToastAndroid.SHORT,ToastAndroid.TOP);
+  };
+
+
+  const handlePress =async () => {
+    const data = await auxDataApi();
+    if(data?.data?.current_shipment){
+      setScannerClose(!stopScanner);
+    }else{
+      navigation.navigate('Shipment', {name: 'Shipment'});
+    }
+
   };
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.button} color="#00aeef">
+      <TouchableOpacity style={styles.button} color="#00aeef" onPress={() => navigation.navigate('Shipment', {name: 'Shipment'})
+      }>
         <Text style={{ color: 'white', fontSize: 16 }}>SHIPMENT</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.logoContainer} onPress={handlePress}>
@@ -17,7 +31,7 @@ export default function BottomNavbar({ setScannerClose, stopScanner }) {
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.button} color="#00aeef">
-        <Text style={{ color: 'white', fontSize: 16 }}>BOOKING</Text>
+        <Text style={{ color: 'white', fontSize: 16 }}>CBM</Text>
       </TouchableOpacity>
     </View>
   );
