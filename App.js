@@ -15,7 +15,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { verifyUser } from './src/api/Auth/auth';
 import LoadingScreen from './src/screens/LoadingScreen';
 import Shipment from './src/screens/Shipment';
-
+import Booking from './src/screens/Booking';
+import { Provider as PaperProvider } from 'react-native-paper';
 const Stack = createNativeStackNavigator();
 // const Stack = createStackNavigator();
 
@@ -72,16 +73,16 @@ if(isLoading){
   
 
   return (
+    <PaperProvider>
     <View style={{ flex: 1 }}>
-
-      
       <NavigationContainer>
       <TopNavbar setGobalLoader={setGobalLoader} gobalLoader={gobalLoader}></TopNavbar>
       {
         auth ?  
         <Stack.Navigator >
         <Stack.Screen name="Home" component={MainScreen}  options={{ headerShown: false }} /> 
-        <Stack.Screen name="Shipment" component={Shipment}  options={{ headerShown: false }} /> 
+        <Stack.Screen name="Shipment" component={Shipment}  options={{ headerShown: false }} />
+        <Stack.Screen name="booking" component={Booking}  options={{ headerShown: false }} />
       </Stack.Navigator> 
       : <Stack.Navigator >
         <Stack.Screen name="Login" component={(props) => <LoginScreen {...props} gobalLoader={gobalLoader} setGobalLoader={setGobalLoader} />}  options={{ headerShown: false }}/>
@@ -90,6 +91,7 @@ if(isLoading){
       </NavigationContainer>
 
   </View>
+  </PaperProvider>
 
 
 

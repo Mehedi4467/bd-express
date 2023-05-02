@@ -1,16 +1,21 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View,Text, TextInput, Button, StyleSheet, TouchableOpacity } from 'react-native';
-
+import { verifyTracking } from '../../api/BookingApi/VerifyTracking';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import { useNavigation } from '@react-navigation/native';
 const HomePage = ({setCode,code}) => {
-  const [selectedOption, setSelectedOption] = useState(null);
-  const [checkID,setCheckId]=useState('');
+  const navigation = useNavigation();
+  // const [selectedOption, setSelectedOption] = useState(null);
+  // const [checkID,setCheckId]=useState('');
   const [inputCode,setInputCode]=useState(code || '');
   // console.log('check',finalCode.length <=0 ?checkID : finalCode[checkID]);
+const [trackingMsg,setTrackingMsg]=useState('');
+const [trackingLoading,setTRackingLoading]=useState(false);
+const [trackingVerifyData,setTrackingVerifyData]=useState([]);
 
 
   const handlePress = () => {
-    // Handle button press here
-    // console.log(inputCode);
+    navigation.navigate('booking',{id:inputCode})
   }
 
 // const handleArrayUpdate=(value,index)=>{
@@ -20,24 +25,63 @@ const HomePage = ({setCode,code}) => {
 // setFinalCode(newArray);
 //   }
 
-  const handleOptionPress = (option,value) => {
-    setSelectedOption(option);
-      setCheckId(option);
-    // console.log(value)
-  };
+  // const handleOptionPress = (option,value) => {
+  //   setSelectedOption(option);
+  //     setCheckId(option);
+ 
+  // };
 
+  useEffect(()=>{
+    if(!inputCode){
+      setTrackingMsg('')
+    }
+
+  },[inputCode])
+  
+
+  const verifyTrackingId =async()=>{
+    setTRackingLoading(true);
+const verifyTI =await verifyTracking(inputCode);
+if(verifyTI?.status === "Accepted"){
+  setTRackingLoading(false);
+  setTrackingMsg(verifyTI?.data?.msg);
+  setTrackingVerifyData(verifyTI);
+}else{
+  setTRackingLoading(false);
+  setTrackingMsg('Something want Wrong!!')
+}
+  }
+
+  useEffect(()=>{
+    if(inputCode){
+      verifyTrackingId()
+    }
+    
+  },[code]);
+
+  const searchTrackingId = ()=>{
+    if(inputCode){
+      verifyTrackingId();
+    }
+  }
   return (
     <View style={styles.container}>
-     
-        <TextInput 
-    
-        style={styles.input}
-        onChangeText={(value)=>setInputCode(value)}
-        // onChange={(value)=>setInputCode(value)}
-        value={inputCode}
-        placeholder="Enter Bar Code"
-      />
-     
+       <View style={{width:'100%',position:'relative'}}>
+       <TextInput 
+    style={styles.input}
+    onChangeText={(value)=>setInputCode(value)}
+    // onChange={(value)=>setInputCode(value)}
+    value={inputCode}
+    placeholder="Enter Bar Code"
+  />
+
+ 
+
+<TouchableOpacity style={{position:'absolute',right:10,top:10}} onPress={()=>searchTrackingId()} >
+<Icon name="search" size={20} color="#000" />
+</TouchableOpacity>
+       </View>
+
 
 
 {/* {
@@ -67,14 +111,28 @@ finalCode.map((item,index)=>
 } */}
 
 
+{
+  trackingLoading ?  <Text>Please Wait.....</Text> : trackingMsg ? <Text>{trackingMsg}</Text>: ''
+}
 
-
-      
+   
  
-<TouchableOpacity
+
+
+      {
+   trackingVerifyData?.status === 'Accepted' && trackingVerifyData?.data?.status == 0 ? <TouchableOpacity
+    style={styles.button}
+    onPress={handlePress}
+  ><Text style={styles.buttonText}>Create Booking</Text>
+  </TouchableOpacity> : trackingVerifyData?.status === 'Accepted' && trackingVerifyData?.data?.status == 1 ? <TouchableOpacity
         style={styles.button}
         onPress={handlePress}
-      ><Text style={styles.buttonText}>Create Booking</Text></TouchableOpacity>
+      ><Text style={styles.buttonText}>Update Booking</Text>
+      </TouchableOpacity> : ''
+  }
+
+
+
     </View>
     
   );
