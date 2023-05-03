@@ -1,13 +1,12 @@
-import { View, Text, TouchableOpacity } from 'react-native'
+import { View, Text } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { Button, Card, RadioButton, TextInput } from 'react-native-paper'
+
 
 export default function CartonDetails() {
   const [cartons,setCarton]=useState(0);
   const [formValues, setFormValues] = useState([]);
-
-
-
+ 
 useEffect(()=>{
 const newArray = [];
   if(+cartons > 0){
@@ -128,8 +127,8 @@ console.log(formValues)
 
 
 
-
     </View>
+   
   )
 }
 
