@@ -33,7 +33,8 @@ const [trackingVerifyData,setTrackingVerifyData]=useState([]);
 
   useEffect(()=>{
     if(!inputCode){
-      setTrackingMsg('')
+      setTrackingMsg('');
+      setTrackingVerifyData([])
     }
 
   },[inputCode])
@@ -120,11 +121,11 @@ finalCode.map((item,index)=>
 
 
       {
-   trackingVerifyData?.status === 'Accepted' && trackingVerifyData?.data?.status == 0 ? <TouchableOpacity
+  inputCode && trackingVerifyData?.status === 'Accepted' && trackingVerifyData?.data?.status == 0 ? <TouchableOpacity
     style={styles.button}
     onPress={handlePress}
   ><Text style={styles.buttonText}>Create Booking</Text>
-  </TouchableOpacity> : trackingVerifyData?.status === 'Accepted' && trackingVerifyData?.data?.status == 1 ? <TouchableOpacity
+  </TouchableOpacity> : inputCode && trackingVerifyData?.status === 'Accepted' && trackingVerifyData?.data?.status == 1 ? <TouchableOpacity
         style={styles.button}
         onPress={handlePress}
       ><Text style={styles.buttonText}>Update Booking</Text>

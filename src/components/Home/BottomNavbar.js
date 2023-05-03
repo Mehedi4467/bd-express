@@ -22,7 +22,7 @@ export default function BottomNavbar({ setScannerClose, stopScanner,navigation }
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.button} color="#00aeef" onPress={() => navigation.navigate('Shipment', {name: 'Shipment'})
+      <TouchableOpacity style={styles.column} color="#00aeef" onPress={() => navigation.navigate('Shipment', {name: 'Shipment'})
       }>
         <Text style={{ color: 'white', fontSize: 16 }}>SHIPMENT</Text>
       </TouchableOpacity>
@@ -30,8 +30,8 @@ export default function BottomNavbar({ setScannerClose, stopScanner,navigation }
         <Image source={logo} style={styles.logo} />
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.button} color="#00aeef">
-        <Text style={{ color: 'white', fontSize: 16 }}>CBM</Text>
+      <TouchableOpacity style={{flex:1}} color="#00aeef">
+        <Text style={{ color: 'white', fontSize: 16 ,textAlign:'right'}}>CBM</Text>
       </TouchableOpacity>
     </View>
   );
@@ -50,14 +50,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
   },
-
+  column:{
+    flex: 1
+  },
   logoContainer: {
+    flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     borderRadius: 50,
     width: 50,
     height: 50,
     shadowColor: '#00aeef',
+    justifyContent:'center',
     shadowOffset: {
       width: 2,
       height: 4,
