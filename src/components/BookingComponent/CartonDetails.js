@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { Button, Card, RadioButton, TextInput } from 'react-native-paper'
 
 
-export default function CartonDetails() {
+export default function CartonDetails({showModal}) {
   const [cartons,setCarton]=useState(0);
   const [formValues, setFormValues] = useState([]);
  
@@ -76,7 +76,10 @@ console.log(formValues)
     </View>
 
     <View>
-    <Button style={{marginTop:10}} icon="plus" mode="contained" onPress={() => console.log('Pressed')}>
+
+
+
+    <Button style={{marginTop:10}} icon="plus" mode="contained" onPress={showModal}>
   Items
 </Button>
     </View>

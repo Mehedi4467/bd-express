@@ -118,13 +118,26 @@ export default function GeneralBooking({input1,setInput1,checked,setChecked,extr
 <View style={{ width:'100%',
       marginTop: 10,}}>
         <Text style={{fontWeight:600,marginBottom:10}}>Shipping Mark: </Text>
-      <TextInput
-        style={styles.input}
+
+        <View style={{flexDirection:'row',justifyContent:'center',alignItems:'center'}}>
+          <View style={{backgroundColor:'#00aeef',height:45,flexDirection:'row',alignItems:'center', borderTopLeftRadius:5,borderBottomLeftRadius:5,width:135}}>
+          <Text style={{color:'#fff',padding:5}}>{checked}/</Text>
+          </View>
+          
+          <TextInput
+        style={{width: '65%',
+        // borderWidth: 1,
+        height:44,
+        borderTopRightRadius:5,
+        borderBottomRightRadius:5,
+        backgroundColor:'#fff'}}
         placeholder="Shipping Mark"
         value={shippingMark}
         onChangeText={(text) => setShippingMark(text)}
        
       />
+        </View>
+   
       
     </View>
 

@@ -13,22 +13,21 @@ export default function Booking({route}) {
     const [extraWork,setExtraWork]=useState('None');
     const [shippingMark,setShippingMark]=useState('');
     const [Shipment,setShipment]=useState('');
-
-
     const [visible, setVisible] = React.useState();
-
     const showModal = () => setVisible(true);
+  
     const hideModal = () => setVisible(false);
 
+    const [ModalValue, setModalValue] = useState([{index: '',item: '',qty: ''},]);
 
+
+console.log(ModalValue)
 
   return (
-  
-    <ScrollView >
-          <Button style={{marginTop: 30}} onPress={showModal}>
-      Show
-    </Button>
-<Provider>
+    <Provider>
+    <ScrollView scrollEnabled={!visible}>
+         
+
 <View style={styles.container}>
 <View>
 <GeneralBooking input1={input1} setInput1={setInput1} checked={checked} setChecked={setChecked} extraWork={extraWork} setExtraWork={setExtraWork} shippingMark={shippingMark} setShippingMark={setShippingMark} Shipment={Shipment} setShipment={setShipment}  ></GeneralBooking>
@@ -37,13 +36,13 @@ export default function Booking({route}) {
 <Divider style={{marginVertical:15,padding:1}} />
 
 <View>
-  <CartonDetails  ></CartonDetails>
+  <CartonDetails showModal={showModal} ></CartonDetails>
 </View>
 </View>
 
-<BookingItemModal visible={visible} hideModal={hideModal}></BookingItemModal>
-</Provider>
   </ScrollView >
+  <BookingItemModal style={{height:100}} ModalValue={ModalValue} setModalValue={setModalValue} visible={visible} hideModal={hideModal}></BookingItemModal>
+  </Provider>
   )
 }
 
