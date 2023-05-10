@@ -59,7 +59,7 @@ console.log(formValues)
     <TextInput
       // placeholder="Carton Number"
       value={item?.cartonNumber}
-      // keyboardType="numeric"
+      keyboardType="numeric"
       onChangeText={(text) => handleChange(index, 'cartonNumber',text)}
       style={{backgroundColor:'#fff', height:25,borderWidth: 1,width: 100}}
     />
@@ -67,7 +67,6 @@ console.log(formValues)
     <View>
     <Text>Weight</Text>
     <TextInput
-      // placeholder="Carton Number"
       value={item?.weigth}
       keyboardType="numeric"
       onChangeText={(text) => handleChange(index, 'weigth',text)}
@@ -79,7 +78,7 @@ console.log(formValues)
 
 
 
-    <Button style={{marginTop:10}} icon="plus" mode="contained" onPress={showModal}>
+    <Button style={{marginTop:10,backgroundColor:'red'}} icon="plus" mode="contained" onPress={showModal}>
   Items
 </Button>
     </View>
@@ -89,7 +88,7 @@ console.log(formValues)
 
 
 
-  <View style={{padding:10}}>
+  <View style={{padding:10,flexDirection:'row',justifyContent:'space-between'}}>
   <View style={{marginTop:20}}>
   <View>
 <Text style={{fontWeight:600}}>Shipment Route: </Text>
@@ -115,6 +114,25 @@ console.log(formValues)
       />
       <Text>HK</Text>
     </View>
+
+    
+  </View>
+
+</View>
+  <View style={{marginTop:20}}>
+  <View>
+<Text style={{fontWeight:600}}>Final Weight: </Text>
+  </View>
+  <View style={{flexDirection:'row',flexWrap: 'wrap',width:'100%'}}>
+  <View>
+    <TextInput
+      value={item?.weigth}
+      keyboardType="numeric"
+      onChangeText={(text) => handleChange(index, 'weigth',text)}
+      style={{backgroundColor:'#fff', height:25,borderWidth: 1,width: 80,marginTop:5}}
+    />
+    </View>
+
   </View>
 
 </View>

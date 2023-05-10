@@ -1,4 +1,4 @@
-import { View, Text,Vibration, StyleSheet } from 'react-native'
+import { View,Vibration, StyleSheet } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import HomePage from '../components/Home/HomePage';
 import BottomNavbar from '../components/Home/BottomNavbar';
@@ -46,6 +46,7 @@ export default function MainScreen({navigation}) {
           stopScanner={stopScanner}
           navigation={navigation}
         ></BottomNavbar>
+        
       </View>
 
      

@@ -1,11 +1,18 @@
 import { View, Text, StyleSheet } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 import { RadioButton, TextInput } from 'react-native-paper';
+import {Picker} from '@react-native-picker/picker';
+export default function GeneralBooking({input1,setInput1,checked,setChecked,extraWork,setExtraWork,shippingMark,setShippingMark,Shipment,setShipment,primaryData}) {
 
-export default function GeneralBooking({input1,setInput1,checked,setChecked,extraWork,setExtraWork,shippingMark,setShippingMark,Shipment,setShipment}) {
+  // console.log(primaryData?.data?.total_shipment)
+
+  const [selectedLanguage, setSelectedLanguage] = useState(primaryData?.data?.current_shipment || '');
+
+  console.log(selectedLanguage)
+
   return (
     <View>
-       <View style={styles.inputContainer}>
+      <View style={styles.inputContainer}>
       <TextInput
         style={styles.input}
         placeholder="Scanned Tracking Number"
@@ -13,42 +20,25 @@ export default function GeneralBooking({input1,setInput1,checked,setChecked,extr
         onChangeText={(text) => setInput1(text)}
         editable={false}
       />
-      
     </View>
 
 
 
    <View>
-   <View style={{flexDirection:'row',alignItems:'center'}}>
-    
-    <View style={{flexDirection:'row',alignItems:'center'}}>
-    <RadioButton
-      value="BD EXpress Cargo"
-      status={ checked === 'BD EXpress Cargo' ? 'checked' : 'unchecked' }
-      onPress={() => setChecked('BD EXpress Cargo')}
-    />
-    <Text>BD EXpress Cargo  </Text>
-    </View>
-    <View style={{flexDirection:'row',alignItems:'center'}}>
-    <RadioButton
-      value="Moveon"
-      status={ checked === 'Moveon' ? 'checked' : 'unchecked' }
-      onPress={() => setChecked('Moveon')}
-    />
-    <Text>Moveon </Text>
-    </View>
-   
-  </View>
-  <View style={{flexDirection:'row',alignItems:'center'}}>
-      
-  <RadioButton
-      value="China Online BD"
-      status={ checked === 'China Online BD' ? 'checked' : 'unchecked' }
-      onPress={() => setChecked('China Online BD')}
-    />
-    <Text>China Online BD</Text>
-  </View>
+        <View style={{flexDirection:'row',flexWrap: 'wrap',alignItems:'center'}}>
+              {
+               primaryData?.data?.shipping_company &&  primaryData?.data?.shipping_company?.map((item,index)=> <View key={index} style={{flexDirection:'row',alignItems:'center'}}>
+                <RadioButton
+                  value={item?.shipping_mark}
+                  status={ checked === item?.shipping_mark ? 'checked' : 'unchecked' }
+                  onPress={() => setChecked(item?.shipping_mark)}
+                />
+                <Text>{item?.company}</Text>
+                </View>)
+              }
+        </View>
    </View>
+
 
 
 
@@ -141,16 +131,24 @@ export default function GeneralBooking({input1,setInput1,checked,setChecked,extr
       
     </View>
 
+
 <View style={{ width:'100%',
       marginTop: 10,}}>
         <Text style={{fontWeight:600,marginBottom:10}}>Shipment:</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Shipment"
-        value={Shipment}
-        onChangeText={(text) => setShipment(text)}
-       
-      />
+     
+    <Picker
+          style={styles.input}
+  selectedValue={selectedLanguage}
+  onValueChange={(itemValue, itemIndex) =>
+    setSelectedLanguage(itemValue)
+  }>
+
+    {
+      primaryData?.data?.total_shipment?.map((item,index)=><Picker.Item key={index} label={item.shipment} value={item.shipment} />)
+    }
+  
+  {/* <Picker.Item label="JavaScript" value="js" /> */}
+</Picker>
       
     </View>
 
