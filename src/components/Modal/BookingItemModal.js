@@ -1,6 +1,6 @@
-import { View, Text, ScrollView, TouchableOpacity } from 'react-native'
+import { View, ScrollView, TouchableOpacity } from 'react-native'
 import React from 'react'
-import {  Card, Modal, Portal, TextInput } from 'react-native-paper'
+import {Modal, Portal, TextInput } from 'react-native-paper'
 import Icon from 'react-native-vector-icons/FontAwesome';
 export default function BookingItemModal({hideModal,visible,setModalValue,ModalValue}) {
 
@@ -21,18 +21,16 @@ export default function BookingItemModal({hideModal,visible,setModalValue,ModalV
   const containerStyle = {backgroundColor: 'white', padding: 20,height:400,margin:10};
   return (
     <Portal>
-    <Modal  visible={visible} onDismiss={hideModal}  contentContainerStyle={containerStyle}>
-      <ScrollView>
-
-
-        {
-          ModalValue.map((item,index)=>    
-           <View key={index} style={{borderWidth: 1,
-            borderColor: '#00aeef',
-            borderRadius: 10,
-            padding: 10,
-            marginBottom:10
-            }}>
+      <Modal  visible={visible} onDismiss={hideModal}  contentContainerStyle={containerStyle}>
+        <ScrollView>
+          {
+            ModalValue.map((item,index)=>    
+            <View key={index} style={{borderWidth: 1,
+              borderColor: '#00aeef',
+              borderRadius: 10,
+              padding: 10,
+              marginBottom:10
+              }}>
         
        {
         index!==0 &&  <View style={{flexDirection:'row',justifyContent:'flex-end'}}>

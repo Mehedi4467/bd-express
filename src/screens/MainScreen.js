@@ -6,19 +6,15 @@ import Scanner from '../components/Scanner/Scanner';
 
 
 export default function MainScreen({navigation}) {
-
   const [code, setCode] = useState('');
+  const [img,setImg]=useState('')
   const [stopScanner, setScannerClose] = useState(true);
   const [inputCode,setInputCode]=useState('');
-
-
-
 
   const handleVibrate = () => {
     Vibration.vibrate(500);
   }
-
-
+  
   useEffect(()=>{
     if(code){
       handleVibrate();
@@ -33,24 +29,20 @@ export default function MainScreen({navigation}) {
     }
   },[stopScanner]);
 
-
   return (
-   <>
+  <>
       {stopScanner ? <View style={{ paddingLeft: 20, paddingRight: 20}}>
-        <HomePage code={code} setCode={setCode} inputCode={inputCode} setInputCode={setInputCode}></HomePage>
-      </View> : <Scanner setScannerClose={setScannerClose}  setCode={setCode} code={code}></Scanner>}
+        <HomePage code={code} img={img} setCode={setCode} inputCode={inputCode} setInputCode={setInputCode}></HomePage>
+      </View> : <Scanner setScannerClose={setScannerClose}  setCode={setCode} setImg={setImg} code={code}></Scanner>}
 
       <View style={styles.Bottomcontainer}>
         <BottomNavbar
           setScannerClose={setScannerClose}
           stopScanner={stopScanner}
-          navigation={navigation}
-        ></BottomNavbar>
-        
+          navigation={navigation}>
+        </BottomNavbar>
       </View>
-
-     
-    </>
+  </>
   )
 }
 

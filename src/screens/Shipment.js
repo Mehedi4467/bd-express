@@ -15,14 +15,13 @@ const [number, setNumber] = useState('');
 const [addLoading,setAddLoading]=useState(false);
 const [UpdateData,setUpdateData]=useState(false);
 
-console.log('hello number',number)
 
 const handleClick = async() => {
   setAddLoading(true);
   const newNumber = (parseInt(number) + 1).toString().padStart(5, '0');
   setNumber(newNumber);
 
-  console.log(newNumber)
+
 
 if(newNumber){
   const x = await AsyncStorage.getItem('user');

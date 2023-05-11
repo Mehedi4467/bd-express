@@ -3,34 +3,17 @@ import { View,Text, TextInput, Button, StyleSheet, TouchableOpacity } from 'reac
 import { verifyTracking } from '../../api/BookingApi/VerifyTracking';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useNavigation } from '@react-navigation/native';
-const HomePage = ({setCode,code}) => {
+const HomePage = ({setCode,code,img}) => {
   const navigation = useNavigation();
-  // const [selectedOption, setSelectedOption] = useState(null);
-  // const [checkID,setCheckId]=useState('');
   const [inputCode,setInputCode]=useState(code || '');
-  // console.log('check',finalCode.length <=0 ?checkID : finalCode[checkID]);
 const [trackingMsg,setTrackingMsg]=useState('');
 const [trackingLoading,setTRackingLoading]=useState(false);
 const [trackingVerifyData,setTrackingVerifyData]=useState([]);
 
 
   const handlePress = () => {
-    navigation.navigate('booking',{id:inputCode})
+    navigation.navigate('booking',{id:inputCode,TRimg:img})
   }
-
-// const handleArrayUpdate=(value,index)=>{
-
-// const newArray = [...finalCode];
-// newArray[index] = value; 
-// setFinalCode(newArray);
-//   }
-
-  // const handleOptionPress = (option,value) => {
-  //   setSelectedOption(option);
-  //     setCheckId(option);
- 
-  // };
-
   useEffect(()=>{
     if(!inputCode){
       setTrackingMsg('');
@@ -39,7 +22,6 @@ const [trackingVerifyData,setTrackingVerifyData]=useState([]);
 
   },[inputCode])
   
-
   const verifyTrackingId =async()=>{
     setTRackingLoading(true);
 const verifyTI =await verifyTracking(inputCode);
@@ -57,7 +39,6 @@ if(verifyTI?.status === "Accepted"){
     if(inputCode){
       verifyTrackingId()
     }
-    
   },[code]);
 
   const searchTrackingId = ()=>{
@@ -67,78 +48,37 @@ if(verifyTI?.status === "Accepted"){
   }
   return (
     <View style={styles.container}>
-       <View style={{width:'100%',position:'relative'}}>
-       <TextInput 
-    style={styles.input}
-    onChangeText={(value)=>setInputCode(value)}
-    // onChange={(value)=>setInputCode(value)}
-    value={inputCode}
-    placeholder="Enter Bar Code"
-  />
-
- 
-
-<TouchableOpacity style={{position:'absolute',right:10,top:10}} onPress={()=>searchTrackingId()} >
-<Icon name="search" size={20} color="#000" />
-</TouchableOpacity>
-       </View>
-
-
-
-{/* {
-
-finalCode.length <=0 ? <TextInput 
-style={styles.input}
-onChangeText={(value)=>setCheckId(value)}
-placeholder="Enter Bar Code"
-/> :
-finalCode.map((item,index)=>
-<View key={index}>
-<View  style={{ flexDirection: 'row', alignItems: 'center',width:'80%' }}>
-  <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }} onPress={() => handleOptionPress(index,item)}>
-    <Text style={{ fontSize: 40,marginBottom:25,marginRight:10 }}>{selectedOption === index ? '◉' : '○'}</Text>
-  </TouchableOpacity>
-  <TextInput 
-
-  style={styles.input}
-  onChangeText={(value)=>handleArrayUpdate(value,index)}
-  // onChange={(e)=>handleArrayUpdate(e.target.value,index)}
-  value={finalCode[index]}
-  placeholder="Enter Bar Code"
-/>
-</View>
-
-</View>)
-} */}
-
-
-{
-  trackingLoading ?  <Text>Please Wait.....</Text> : trackingMsg ? <Text>{trackingMsg}</Text>: ''
-}
-
-   
- 
-
+      <View style={{width:'100%',position:'relative'}}>
+      <TextInput 
+          style={styles.input}
+          onChangeText={(value)=>setInputCode(value)}
+          value={inputCode}
+          placeholder="Enter Bar Code"
+    />
+      <TouchableOpacity style={{position:'absolute',backgroundColor:'#00aeef',width:60,height:40,flexDirection:'row',alignItems:'center',justifyContent:'center', borderRadius:5, right:0,top:0}} onPress={()=>searchTrackingId()} >
+      <Icon name="search" size={20} color="#fff" />
+      </TouchableOpacity>
+      </View>
 
       {
-  inputCode && trackingVerifyData?.status === 'Accepted' && trackingVerifyData?.data?.status == 0 ? <TouchableOpacity
-    style={styles.button}
-    onPress={handlePress}
-  ><Text style={styles.buttonText}>Create Booking</Text>
-  </TouchableOpacity> : inputCode && trackingVerifyData?.status === 'Accepted' && trackingVerifyData?.data?.status == 1 ? <TouchableOpacity
+        trackingLoading ?  <Text>Please Wait.....</Text> : trackingMsg ? <Text>{trackingMsg}</Text>: ''
+      }
+      {
+      inputCode && trackingVerifyData?.status === 'Accepted' && trackingVerifyData?.data?.status == 0 ? <TouchableOpacity
         style={styles.button}
         onPress={handlePress}
-      ><Text style={styles.buttonText}>Update Booking</Text>
-      </TouchableOpacity> : ''
-  }
+      ><Text style={styles.buttonText}>Create Booking</Text>
+      </TouchableOpacity> : inputCode && trackingVerifyData?.status === 'Accepted' && trackingVerifyData?.data?.status == 1 ? <TouchableOpacity
+            style={styles.button}
+            onPress={handlePress}
+          ><Text style={styles.buttonText}>Update Booking</Text>
+          </TouchableOpacity> : ''
+      }
 
-
-
-    </View>
-    
+      </View>
+  
   );
 }
-
 const styles = StyleSheet.create({
   container: {
     height:'100%',

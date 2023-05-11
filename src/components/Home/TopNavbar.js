@@ -13,7 +13,7 @@ export default function TopNavbar({isNavOpen,setIsNavOpen}) {
   const navigation = useNavigation();
   // const route = useRoute();
   const { primaryData, setRefatchData,refetchDatar } = useContext(MyContext);
-  console.log('coin',primaryData?.data?.wallet)
+  // console.log('coin',primaryData?.data?.wallet)
 
   // const logOut= async()=>{
   //   const x = await AsyncStorage.getItem('user');

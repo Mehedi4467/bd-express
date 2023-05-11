@@ -26,7 +26,7 @@ let handleChange = (i, name,value) => {
 };
 
 
-console.log(formValues)
+// console.log(formValues)
 
 
   return (
