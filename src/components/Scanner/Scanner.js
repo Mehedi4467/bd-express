@@ -3,10 +3,7 @@ import {
   Text,
   View,
   StyleSheet,
-  Button,
   TouchableOpacity,
-  Dimensions,
-  Image
 } from "react-native";
 import { BarCodeScanner } from "expo-barcode-scanner";
 import LoadingScreen from "../../screens/LoadingScreen";
@@ -36,19 +33,10 @@ export default function Scanner({ code, setCode, setScannerClose, setImg }) {
   const handleBarCodeScanned = async ({ type, data }) => {
     const photo = await scannerRef.current.takePictureAsync();
     setImageUri(photo.uri);
-
-    //   const formData = new FormData();
-    // formData.append('image', {
-    //   uri: photo.uri,
-    //   type: 'image/jpeg',
-    //   name: 'image.jpg',
-    // });
-
     if (data) {
       setCode(data);
       setImg(photo.uri);
     }
-
     setScanned(true);
     // alert(`Bar code with type ${type} and data ${data} has been scanned!`);
   };
@@ -128,7 +116,7 @@ export default function Scanner({ code, setCode, setScannerClose, setImg }) {
         style={{
           zIndex: 1,
           width: "90%",
-          height: 200 * 1.1
+          height: 300 * 1.1
         }}
         flashMode={
           flashLight

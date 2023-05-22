@@ -1,17 +1,21 @@
-import { View, Text } from 'react-native'
+import { View, Text, TouchableOpacity } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { Button, Card, RadioButton, TextInput } from 'react-native-paper'
+import { Card, RadioButton, TextInput } from 'react-native-paper'
+import Icon from 'react-native-vector-icons/FontAwesome';
+// import BookingItemModal from '../Modal/BookingItemModal';
 
 
-export default function CartonDetails({showModal}) {
+export default function CartonDetails({formValues,setFormValues,showModal}) {
+
+  // console.log(formValues)
+
   const [cartons,setCarton]=useState(0);
-  const [formValues, setFormValues] = useState([]);
- 
-useEffect(()=>{
+  // const [disabled, setDisabled] = useState(false);
+  useEffect(()=>{
 const newArray = [];
   if(+cartons > 0){
     for (let i = 0; i < +cartons ; i++) {
-      newArray.push({ carton: i+1, cartonNumber: '', weigth: '',route:'' })
+      newArray.push({index:i, carton: i+1, cartonNumber: '', weigth: '',route:'',items:[{index: i,item: '',qty: ''}] })
     }
   }
   setFormValues(newArray)
@@ -26,7 +30,7 @@ let handleChange = (i, name,value) => {
 };
 
 
-// console.log(formValues)
+
 
 
   return (
@@ -45,7 +49,8 @@ let handleChange = (i, name,value) => {
 <View style={{marginVertical:10}}>
 
 {
-  formValues.length > 0 && formValues.map((item,index)=><Card key={index} style={{borderWidth: 1,marginBottom:10}}>
+  formValues.length > 0 && formValues.map((item,index)=>
+  <Card key={index} style={{borderWidth: 1,marginBottom:10,backgroundColor:'#fff'}}>
   <Card.Content style={{flexDirection:'row',justifyContent:'space-between',alignItems:'center'}}>
     <View>
     <Text>Carton</Text>
@@ -76,17 +81,15 @@ let handleChange = (i, name,value) => {
 
     <View>
 
-
-
-    <Button style={{marginTop:10,backgroundColor:'red'}} icon="plus" mode="contained" onPress={showModal}>
-  Items
-</Button>
+    <TouchableOpacity onPress={()=>showModal(index)} icon="plus" style={{marginTop:10,backgroundColor: formValues[index]?.items?.every(item=>item?.item && item?.qty) ? "#00aeef" : 'red',borderRadius:5,padding:5}}>
+      <View style={{flexDirection:'row', alignItems:'center',justifyContent:'center',gap:5}}>
+      <Icon name="plus" size={20} color="#fff" />
+      <Text style={{color:'#fff'}}>Items</Text>
+      </View>
+    </TouchableOpacity>
     </View>
 
   </Card.Content>
-
-
-
 
   <View style={{padding:10,flexDirection:'row',justifyContent:'space-between'}}>
   <View style={{marginTop:20}}>
@@ -100,7 +103,6 @@ let handleChange = (i, name,value) => {
         value="GZ"
         status={ item?.route === 'GZ' ? 'checked' : 'unchecked' }
         onPress={() => handleChange(index, 'route','GZ')}
-        // onPress={() => setShipMentRoute('GZ')}
       />
       <Text>GZ</Text>
     </View>
@@ -109,45 +111,36 @@ let handleChange = (i, name,value) => {
     <RadioButton
         value="HK"
         status={ item?.route === 'HK' ? 'checked' : 'unchecked' }
-        // onPress={() => setShipMentRoute('HK')}
         onPress={() => handleChange(index, 'route',"HK")}
       />
       <Text>HK</Text>
     </View>
-
-    
   </View>
 
 </View>
-  <View style={{marginTop:20}}>
-  <View>
-<Text style={{fontWeight:600}}>Final Weight: </Text>
-  </View>
-  <View style={{flexDirection:'row',flexWrap: 'wrap',width:'100%'}}>
-  <View>
-    <TextInput
-      value={item?.weigth}
-      keyboardType="numeric"
-      onChangeText={(text) => handleChange(index, 'weigth',text)}
-      style={{backgroundColor:'#fff', height:25,borderWidth: 1,width: 80,marginTop:5}}
-    />
-    </View>
 
-  </View>
-
-</View>
+      {/* <View style={{marginTop:20}}>
+      <View>
+          <Text style={{fontWeight:600}}>Final Weight: </Text>
+      </View>
+        <View style={{flexDirection:'row',flexWrap: 'wrap',width:'100%'}}>
+          <View>
+            <TextInput
+              value={item?.finalWeight}
+              keyboardType="numeric"
+              onChangeText={(text) => handleChange(index, 'finalWeight',text)}
+              style={{backgroundColor:'#fff', height:25,borderWidth: 1,width: 80,marginTop:5}}
+            />
+          </View>
+        </View>
+      </View> */}
   </View>
 
 </Card>)
+
 }
 
-
-
-
 </View>
-
-
-
     </View>
    
   )

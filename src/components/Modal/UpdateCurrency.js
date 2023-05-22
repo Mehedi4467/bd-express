@@ -5,14 +5,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 
-export default function Currency({setVisiblecurrency,setPaymentCurrency,visibleCurrency}) {
+export default function UpdateCurrency({setVisiblecurrency,setPaymentCurrency,visibleCurrency,paymentCurrency}) {
 
-    const [curency,setCurency]=useState(0);
     const [id,setId]=useState('Payment');
-    const [value,setValue]=useState(0);
+    const [value,setValue]=useState(paymentCurrency?.amount || 0);
     const [userInfo,setUserInfo]=useState([])
-
-
     const UserInformation = async()=>{
       const x = await AsyncStorage.getItem('user');
       const user = JSON.parse(x);
@@ -56,6 +53,7 @@ export default function Currency({setVisiblecurrency,setPaymentCurrency,visibleC
             style={{width:'70%',height:45}}
             mode="outlined"
             label="Amount"
+            value={value.toString()}
             placeholder="Type Amount"
             onChangeText={(value)=>setValue(value)}
             keyboardType="numeric"

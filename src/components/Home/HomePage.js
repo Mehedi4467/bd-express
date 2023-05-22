@@ -3,17 +3,55 @@ import { View,Text, TextInput, Button, StyleSheet, TouchableOpacity } from 'reac
 import { verifyTracking } from '../../api/BookingApi/VerifyTracking';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useNavigation } from '@react-navigation/native';
+import { pathLogOutApi } from '../../api/Auth/pathLogOut';
+import { verifyUserPath } from '../../api/Auth/allPathVerify';
+import { deepCheckTrackingId } from '../../api/BookingApi/deepCheck';
+import ReturnPOpModal from '../Modal/ReturnPOpModal';
 const HomePage = ({setCode,code,img}) => {
-  const navigation = useNavigation();
-  const [inputCode,setInputCode]=useState(code || '');
+const navigation = useNavigation();
+const [inputCode,setInputCode]=useState(code || '');
 const [trackingMsg,setTrackingMsg]=useState('');
 const [trackingLoading,setTRackingLoading]=useState(false);
 const [trackingVerifyData,setTrackingVerifyData]=useState([]);
+const [createBooking,setCreateBooking]=useState(false);
+const [openReturn,setReturn]=useState(false);
+const [returnData,setReturnData]=useState({
+  tracking_id: '',
+  msg:'',
+})
 
-
-  const handlePress = () => {
-    navigation.navigate('booking',{id:inputCode,TRimg:img})
+  const handlePress = async() => {
+    const x = await verifyUserPath();
+        if(!x?.status || x?.exception === 'yes'){
+            pathLogOutApi();
+            navigation.navigate('Login');
+            setLoading(false);
+      }else{
+        navigation.navigate('booking',{id:inputCode,TRimg:img});
+      }
+    
   }
+
+  const updateBooking = (BId,trId)=>{
+    navigation.navigate('update',{trackingID: trId,BookingID :BId });
+  }
+
+  // const deepCheck = async(value) => {
+  //   const x = await verifyUserPath();
+  //       if(!x?.status || x?.exception === 'yes'){
+  //           pathLogOutApi();
+  //           navigation.navigate('Login');
+  //           setLoading(false);
+  //     }else{
+
+  //       const check = await deepCheckTrackingId(value);
+  //       console.log(check)
+  //       // navigation.navigate('booking',{id:inputCode,TRimg:img});
+  //     }
+    
+  // }
+
+
   useEffect(()=>{
     if(!inputCode){
       setTrackingMsg('');
@@ -29,6 +67,25 @@ if(verifyTI?.status === "Accepted"){
   setTRackingLoading(false);
   setTrackingMsg(verifyTI?.data?.msg);
   setTrackingVerifyData(verifyTI);
+
+  if(verifyTI?.data?.status === 0 ){
+    const check = await deepCheckTrackingId(inputCode);
+
+    if(check?.data?.status === 0){
+      setCreateBooking(true);
+    }else{
+      setCreateBooking(false);
+      navigation.navigate('check',{id:inputCode,data:check});
+    }
+    
+  }else if(verifyTI?.data?.status === 2){
+    setReturn(true);
+    setReturnData({
+      tracking_id:verifyTI?.data?.tracking_id,
+      msg:verifyTI?.data?.msg
+    })
+  }
+
 }else{
   setTRackingLoading(false);
   setTrackingMsg('Something want Wrong!!')
@@ -53,7 +110,7 @@ if(verifyTI?.status === "Accepted"){
           style={styles.input}
           onChangeText={(value)=>setInputCode(value)}
           value={inputCode}
-          placeholder="Enter Bar Code"
+          placeholder="Enter Bar Code"   
     />
       <TouchableOpacity style={{position:'absolute',backgroundColor:'#00aeef',width:60,height:40,flexDirection:'row',alignItems:'center',justifyContent:'center', borderRadius:5, right:0,top:0}} onPress={()=>searchTrackingId()} >
       <Icon name="search" size={20} color="#fff" />
@@ -64,16 +121,23 @@ if(verifyTI?.status === "Accepted"){
         trackingLoading ?  <Text>Please Wait.....</Text> : trackingMsg ? <Text>{trackingMsg}</Text>: ''
       }
       {
-      inputCode && trackingVerifyData?.status === 'Accepted' && trackingVerifyData?.data?.status == 0 ? <TouchableOpacity
+      inputCode && trackingVerifyData?.status === 'Accepted' && trackingVerifyData?.data?.status == 0 && createBooking ? <>
+     <TouchableOpacity
         style={styles.button}
         onPress={handlePress}
       ><Text style={styles.buttonText}>Create Booking</Text>
-      </TouchableOpacity> : inputCode && trackingVerifyData?.status === 'Accepted' && trackingVerifyData?.data?.status == 1 ? <TouchableOpacity
+      </TouchableOpacity>  
+      </>
+      : inputCode && trackingVerifyData?.status === 'Accepted' && trackingVerifyData?.data?.status == 1 ? <TouchableOpacity
             style={styles.button}
-            onPress={handlePress}
+            onPress={()=>updateBooking(trackingVerifyData?.data?.booking,trackingVerifyData?.data?.tracking_id)}
           ><Text style={styles.buttonText}>Update Booking</Text>
           </TouchableOpacity> : ''
       }
+{
+  openReturn && <ReturnPOpModal navigation={navigation} returnData={returnData} setReturnData={setReturnData} openReturn={openReturn} setReturn={setReturn}></ReturnPOpModal>
+}
+
 
       </View>
   
@@ -81,7 +145,7 @@ if(verifyTI?.status === "Accepted"){
 }
 const styles = StyleSheet.create({
   container: {
-    height:'100%',
+    height:'87%',
     justifyContent: 'center',
     alignItems: 'center',
   },

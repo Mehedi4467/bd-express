@@ -1,6 +1,5 @@
 
 import MainScreen from './src/screens/MainScreen';
-import TopNavbar from './src/components/Home/TopNavbar';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginScreen from './src/screens/LoginScreen';
 import { NavigationContainer } from '@react-navigation/native';
@@ -18,15 +17,18 @@ import { logOut } from './src/utility/LogOut';
 import { auxDataApi } from './src/api/Shipment/VerifyShipment';
 import MyContext from './src/utility/MyContext';
 import NavBar from './src/components/NavBar/NavBar';
+import ViewCarton from './src/screens/ViewCarton';
+import CBMCalculator from './src/screens/CBMCalculator';
+import CbmScreen from './src/screens/CbmScreen';
+import DeepCheck from './src/screens/DeepCheck';
+import UpdateBooking from './src/screens/UpdateBooking';
 const Stack = createNativeStackNavigator();
 
 export default function App() {
-  const [isLoading, setIsLoading] = useState(true);
+
   const [isNavOpen, setIsNavOpen] = useState(false);
-const [auth,setAuth]=useState(false);
+// const [auth,setAuth]=useState(false);
 const [gobalLoader,setGobalLoader]=useState(false);
-
-
 
 
 const [primaryData,setPrimaryData]=useState([]);
@@ -38,61 +40,65 @@ const auxData = async()=>{
   setPrimaryData(data)
 }
 
-
 useEffect(()=>{
   auxData();
 },[refetchData])
 
 
-useEffect(() => {
-  const checkAuthentication = async () => {
-    const x = await AsyncStorage.getItem('user');
-    const userInfo = JSON.parse(x);
-    if(userInfo){
-     const verify = await verifyUser(userInfo?.user, userInfo?.access_token);
-     if(verify?.status){
-      setAuth(true);
-     }
-     setIsLoading(false);
-    }else{
-      setAuth(false);
-      setIsLoading(false);
-    }
-  };
+// useEffect(() => {
+//   const checkAuthentication = async () => {
+//     const x = await AsyncStorage.getItem('user');
+//     const userInfo = JSON.parse(x);
+//     if(userInfo){
+//      const verify = await verifyUser(userInfo?.user, userInfo?.access_token);
+//      if(verify?.status){
+//       setAuth(true);
+//      }
+//      setIsLoading(false);
+//     }else{
+//       setAuth(false);
+//       setIsLoading(false);
+//     }
+//   };
 
-  checkAuthentication();
-}, [gobalLoader]);
+//   checkAuthentication();
+// }, [gobalLoader]);
 
-if(isLoading){
-  return <LoadingScreen></LoadingScreen>
-}
+
 
   return (
     <MyContext.Provider value={{ primaryData, setRefatchData,refetchData }}>
     <PaperProvider>
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1,position:'relative' }}>
       <NavigationContainer>
-      <TopNavbar setIsNavOpen={setIsNavOpen} isNavOpen={isNavOpen}></TopNavbar>
-      {
-        auth ?  
-        <Stack.Navigator >
+      {/* <TopNavbar setIsNavOpen={setIsNavOpen} isNavOpen={isNavOpen}></TopNavbar> */}
+
+      <Stack.Navigator >
+       <Stack.Screen name="Login" component={LoginScreen}  options={{ headerShown: false }}/>
+    
         <Stack.Screen name="Home" component={MainScreen}  options={{ headerShown: false }}  /> 
         <Stack.Screen name="Shipment" component={Shipment}  options={{ headerShown: false }} />
         <Stack.Screen name="booking" component={Booking}  options={{ headerShown: false }} />
-      </Stack.Navigator> 
-      : <Stack.Navigator >
+        <Stack.Screen name="view_carton" component={ViewCarton}  options={{ headerShown: false }} />
+        <Stack.Screen name="setCbm" component={CBMCalculator}  options={{ headerShown: false }} />
+        <Stack.Screen name="cbm" component={CbmScreen}  options={{ headerShown: false }} />
+        <Stack.Screen name="check" component={DeepCheck}  options={{ headerShown: false }} />
+        <Stack.Screen name="update" component={UpdateBooking}  options={{ headerShown: false }} />
+        
+        {/* </>
+      : 
         <Stack.Screen name="Login" component={(props) => <LoginScreen {...props} gobalLoader={gobalLoader} setGobalLoader={setGobalLoader} />}  options={{ headerShown: false }}/>
-      </Stack.Navigator>
-      }
-      </NavigationContainer>
-
-
-{
+    //  <Stack.Screen name="Login" component={LoginScreen}  options={{ headerShown: false }}/> 
+     
+      } */}
+ </Stack.Navigator>
+</NavigationContainer>
+{/* {
   isNavOpen &&  
   <NavBar setGobalLoader={setGobalLoader} gobalLoader={gobalLoader}></NavBar>
-}
+} */}
      
-         </View>
+  </View>
   </PaperProvider>
   </MyContext.Provider>
   );

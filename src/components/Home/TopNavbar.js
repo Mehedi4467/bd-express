@@ -6,10 +6,11 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 // import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import MyContext from '../../utility/MyContext';
+import NavBar from '../NavBar/NavBar';
 
 
 
-export default function TopNavbar({isNavOpen,setIsNavOpen}) {
+export default function TopNavbar({isNavOpen,setIsNavOpen,topNav}) {
   const navigation = useNavigation();
   // const route = useRoute();
   const { primaryData, setRefatchData,refetchDatar } = useContext(MyContext);
@@ -35,9 +36,10 @@ export default function TopNavbar({isNavOpen,setIsNavOpen}) {
   // }
 
   return (
+    <>
     <View style={styles.logoContainer}>
        
-       <TouchableOpacity style={{height:40,width:40,backgroundColor:'#00aeef',flexDirection:'row',justifyContent:'center',alignItems:'center',borderRadius:25}} onPress={()=>navigation.canGoBack() && navigation.goBack()}>
+       <TouchableOpacity style={{height:40,width:40,backgroundColor:'#00aeef',flexDirection:'row',justifyContent:'center',alignItems:'center',borderRadius:25,opacity: topNav ? .5 : 1}} disabled={topNav} onPress={()=>navigation.canGoBack() && !topNav && navigation.goBack()}>
       <Icon  name="arrow-left" size={25}  color="#fff" />
       </TouchableOpacity>
 
@@ -47,7 +49,15 @@ export default function TopNavbar({isNavOpen,setIsNavOpen}) {
           {/* <Icon onPress={()=>logOut()} name="sign-out" size={30} color="#900" /> */}
       </TouchableOpacity>
  
+
+  
+
     </View>
+    {
+  isNavOpen &&  
+  <NavBar navigation={navigation}></NavBar>
+}
+    </>
   );
 }
 
@@ -58,7 +68,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     marginHorizontal:10,
-    marginTop:30
+    marginTop:20
   },
   logo: {
     width: 80,

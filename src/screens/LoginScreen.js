@@ -1,14 +1,47 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { loginApi } from '../api/Auth/login';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import LoadingScreen from './LoadingScreen';
+import { verifyUser } from '../api/Auth/auth';
 
 
-const LoginScreen = ({gobalLoader,setGobalLoader}) => {
+const LoginScreen = ({gobalLoader,setGobalLoader,navigation}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 const [error,setError]=useState('');
 const [loading,setLoaing]=useState(false);
+const [auth,setAuth]=useState(false);
+const [isLoading, setIsLoading] = useState(true);
+
+
+
+
+
+useEffect(() => {
+  const checkAuthentication = async () => {
+    const x = await AsyncStorage.getItem('user');
+    const userInfo = JSON.parse(x);
+    if(userInfo){
+     const verify = await verifyUser(userInfo?.user, userInfo?.access_token);
+     if(verify?.status){
+      setAuth(true);
+      navigation.navigate('Home'); 
+     }
+     setIsLoading(false);
+    }else{
+      setAuth(false);
+      setIsLoading(false);
+    }
+  };
+
+  checkAuthentication();
+}, [navigation]);
+
+
+if(isLoading){
+  return <LoadingScreen></LoadingScreen>
+}
 // const navigation = useNavigation();
 
   const handleLogin = async() => {
@@ -25,8 +58,8 @@ const [loading,setLoaing]=useState(false);
         try {
           await AsyncStorage.setItem('user', JSON.stringify(log?.data));
           // console.log('User data stored successfully');
-          // navigation.navigate('Home')
-          setGobalLoader(!gobalLoader)
+          navigation.navigate('Home')
+          // setGobalLoader(!gobalLoader)
         } catch (e) {
           // console.log('Failed to store user data', e);
           setError('Something want wrong')

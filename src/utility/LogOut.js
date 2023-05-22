@@ -1,7 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { logOutApi } from "../api/Auth/logout";
 
-export const logOut= async(setGobalLoader,gobalLoader)=>{
+export const logOut= async()=>{
     const x = await AsyncStorage.getItem('user');
     const userInfo = JSON.parse(x);
     if(userInfo){
@@ -12,9 +12,8 @@ export const logOut= async(setGobalLoader,gobalLoader)=>{
           console.log('Item removed successfully');
           // navigation.navigate('Login')
           // <LoginScreen></LoginScreen>
-          setGobalLoader(!gobalLoader)
         } catch (e) {
-          // console.log('Error removing item:', e);
+          console.log('Error removing item:', e);
         }
       }
     }
