@@ -5,10 +5,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 
-export default function UpdateCurrency({setVisiblecurrency,setPaymentCurrency,visibleCurrency,paymentCurrency}) {
+export default function UpdateCurrency({setVisiblecurrency,setPaymentCurrency,visibleCurrency,paymentCurrency,setPayment,payment,setUpdateCheckBoxItem}) {
 
     const [id,setId]=useState('Payment');
-    const [value,setValue]=useState(paymentCurrency?.amount || 0);
+    const [value,setValue]=useState(payment?.amount || 0);
     const [userInfo,setUserInfo]=useState([])
     const UserInformation = async()=>{
       const x = await AsyncStorage.getItem('user');
@@ -25,18 +25,27 @@ export default function UpdateCurrency({setVisiblecurrency,setPaymentCurrency,vi
 
     const handdleCurency = ()=>{
       if(value){
-        setPaymentCurrency({
-          id:id,
+        setPayment({
+          name:id,
           currency:userInfo?.country,
-          amount:+value
+          amount:+value,
+          status:true
         });
         setVisiblecurrency(false);
+        setUpdateCheckBoxItem(false);
       }
     }
 
     
     const handleDisMis = ()=>{
       setVisiblecurrency(false);
+      setUpdateCheckBoxItem(false);
+      setPayment({
+        name:'',
+        currency:false,
+        amount:0,
+        status:false
+      });
     }
 
 

@@ -39,7 +39,6 @@ export default function CbmScreen({navigation}) {
         }
     },[boxNumber])
 
-
     const CBMCalculator =async(box_no)=>{
         const x = await verifyUserPath();
         if(!x?.status || x?.exception === 'yes'){
@@ -61,6 +60,7 @@ export default function CbmScreen({navigation}) {
     <View style={{width:'100%',position:'relative'}}>
       <TextInput
           style={styles.input}
+          value={boxNumber}
           onChangeText={(value)=>setBoxNumber(value)}
           placeholder="Enter Carton Number"
     />
@@ -77,13 +77,13 @@ export default function CbmScreen({navigation}) {
                     loading ? <View style={{paddingVertical:10}}><LoadingScreen></LoadingScreen></View> : <Text style={{textAlign:'center'}} variant="titleLarge">Search Carton Number</Text>
                 }
             </Card.Content>
-        </Card> : ''
+        </Card> : <Text></Text>
         }
         {
-            boxNumber && searchData?.height &&  <Card style={{backgroundColor:'#fff'}}>
+            boxNumber && searchData?.height !== null && searchData?.height ?  <Card style={{backgroundColor:'#fff'}}>
             <Card.Content>
                 {
-                    searchData?.height ? <View style={{flexDirection:'row',justifyContent:'space-between'}}>
+                    searchData?.height !== null ? <View style={{flexDirection:'row',justifyContent:'space-between'}}>
                         <Text>{boxNumber}</Text>
                         <TouchableOpacity style={{backgroundColor:'#00aeef',borderRadius:5,padding:4}} onPress={()=>CBMCalculator(boxNumber)} >
                            <Text style={{color:'#fff'}}>Update CBM</Text>
@@ -91,10 +91,10 @@ export default function CbmScreen({navigation}) {
                     </View> : <Text style={{textAlign:'center'}} variant="titleLarge">Search Carton Number</Text>
                 }
             </Card.Content>
-        </Card>
+        </Card> : <Text></Text>
         }
         {
-           boxNumber && searchData?.height === null &&  <Card style={{backgroundColor:'#fff'}}>
+           boxNumber && searchData?.height === null && !searchData?.height &&  <Card style={{backgroundColor:'#fff'}}>
             <Card.Content>
                 {
                     loading ? <View style={{paddingVertical:10}}><LoadingScreen></LoadingScreen></View> : <Text style={{textAlign:'center'}} variant="titleLarge">Carton Not Found!</Text>

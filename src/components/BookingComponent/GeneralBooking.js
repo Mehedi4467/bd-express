@@ -1,20 +1,28 @@
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { Divider, RadioButton, TextInput } from 'react-native-paper';
+import { Checkbox, Divider, RadioButton, TextInput } from 'react-native-paper';
 import {Picker} from '@react-native-picker/picker';
+import CheckBoxItem from './CheckBoxItem';
 
 
 
-export default function GeneralBooking({input1,setInput1,checked,setChecked,extraWork,setExtraWork,shippingMark,setShippingMark,Shipment,setShipment,primaryData,setPaymentCurrency,country,setCountry,paymentCurrency}) {
-  // console.log('general booking')
-
+export default function GeneralBooking({input1,setInput1,checked,setChecked,extraWork,setExtraWork,shippingMark,setShippingMark,Shipment,setShipment,primaryData,setPaymentCurrency,country,setCountry,paymentCurrency,setPayment,payment,setPackedbyWarehouse,PackedbyWarehouse,setProductInspection,ProductInspection,setSpecialPacking,SpecialPacking}) {
 
   const [suggestion,setSuggestion]=useState(false);
-
   const [selectedLanguage, setSelectedLanguage] = useState(primaryData?.data?.current_shipment || '');
-
   const [countrySelect, setcountrySelect] = useState(country || '');
   const [searchSuggestionData,setSuggestionData]=useState([]);
+
+  useEffect(()=>{
+    if(payment?.status){
+      setExtraWork(payment?.name)
+    }else{
+      setExtraWork('')
+    }
+    
+  },[payment])
+
+
   const suggestionData = (value)=>{
     const data = value?.filter(data=> data.client && data.client.toLowerCase().includes(shippingMark.toLowerCase()))
     setSuggestionData(data)
@@ -109,82 +117,81 @@ export default function GeneralBooking({input1,setInput1,checked,setChecked,extr
 
 <View style={{marginTop:20}}>
     <View>
-<Text style={{fontWeight:600}}>Extra Work: </Text>
+        <Text style={{fontWeight:600}}>Extra Work: </Text>
     </View>
-    <View style={{flexDirection:'row',flexWrap: 'wrap',width:'100%'}}>
-    <View style={{flexDirection:'row',alignItems:'center'}}>
-      
-      <RadioButton
-          value="None"
-          status={ extraWork === 'None' ? 'checked' : 'unchecked' }
-          onPress={() => {setPaymentCurrency({
-            id:'None',
-            currency:false,
-            amount:0
-          });
-          setExtraWork('None')} }
-        />
-        <Text>None</Text>
-      </View>
-    <View style={{flexDirection:'row',alignItems:'center'}}>
-      
-      <RadioButton
-          value="Packed by Warehouse"
-          status={ extraWork === 'Packed by Warehouse' ? 'checked' : 'unchecked' }
-          onPress={() => {setPaymentCurrency({
-            id:'Packed by Warehouse',
-            currency:false,
-            amount:0
-          });
-          setExtraWork('Packed by Warehouse')} }
-        />
-        <Text>Packed by Warehouse</Text>
-      </View>
-    <View style={{flexDirection:'row',alignItems:'center'}}>
-      
-      <RadioButton
-          value="Payment"
-          status={ extraWork === 'Payment' ? 'checked' : 'unchecked' }
-          onPress={() => setExtraWork("Payment")}
-        />
-        <Text>Payment({paymentCurrency?.amount})</Text>
-      </View>
 
-    <View style={{flexDirection:'row',alignItems:'center'}}>
-      
-      <RadioButton
-          value="Special Packing"
-          status={ extraWork === 'Special Packing' ? 'checked' : 'unchecked' }
-          onPress={() => {setPaymentCurrency({
-            id:'Special Packing',
-            currency:false,
-            amount:0
-          });
-          setExtraWork('Special Packing')} }
-        />
-        <Text>Special Packing</Text>
-      </View>
-    <View style={{flexDirection:'row',alignItems:'center'}}>
-      
-      <RadioButton
-          value="Product Inspection"
-          status={ extraWork === 'Product Inspection' ? 'checked' : 'unchecked' }
-          onPress={() => {setPaymentCurrency({
-            id:'Product Inspection',
-            currency:false,
-            amount:0
-          });
-          setExtraWork('Product Inspection')} }
-  
-        />
-        <Text>Product Inspection</Text>
-      </View>
+    {/* <View style={{flexDirection:'row',flexWrap: 'wrap',width:'100%'}}>
+        <View style={{flexDirection:'row',alignItems:'center'}}>
+          <RadioButton
+              value="None"
+              status={ extraWork === 'None' ? 'checked' : 'unchecked' }
+              onPress={() => {setPaymentCurrency({
+                id:'None',
+                currency:false,
+                amount:0
+              });
+              setExtraWork('None')} }
+            />
+            <Text>None</Text>
+        </View>
+        <View style={{flexDirection:'row',alignItems:'center'}}>
+          <RadioButton
+              value="Packed by Warehouse"
+              status={ extraWork === 'Packed by Warehouse' ? 'checked' : 'unchecked' }
+              onPress={() => {setPaymentCurrency({
+                id:'Packed by Warehouse',
+                currency:false,
+                amount:0
+              });
+              setExtraWork('Packed by Warehouse')} }
+            />
+            <Text>Packed by Warehouse</Text>
+        </View>
+        <View style={{flexDirection:'row',alignItems:'center'}}>
+          <RadioButton
+              value="Payment"
+              status={ extraWork === 'Payment' ? 'checked' : 'unchecked' }
+              onPress={() => setExtraWork("Payment")}
+            />
+          <Text>Payment({paymentCurrency?.amount})</Text>
+        </View>
+
+        <View style={{flexDirection:'row',alignItems:'center'}}>
+          <RadioButton
+              value="Special Packing"
+              status={ extraWork === 'Special Packing' ? 'checked' : 'unchecked' }
+              onPress={() => {setPaymentCurrency({
+                id:'Special Packing',
+                currency:false,
+                amount:0
+              });
+              setExtraWork('Special Packing')} }
+            />
+            <Text>Special Packing</Text>
+          </View>
 
 
-    </View>
+        <View style={{flexDirection:'row',alignItems:'center'}}>
+          
+          <RadioButton
+              value="Product Inspection"
+              status={ extraWork === 'Product Inspection' ? 'checked' : 'unchecked' }
+              onPress={() => {setPaymentCurrency({
+                id:'Product Inspection',
+                currency:false,
+                amount:0
+              });
+              setExtraWork('Product Inspection')} }
+      
+            />
+            <Text>Product Inspection</Text>
+        </View>
+    </View> */}
+
+
+  <CheckBoxItem payment={payment} setPayment={setPayment} setPackedbyWarehouse={setPackedbyWarehouse} PackedbyWarehouse={PackedbyWarehouse} setProductInspection={setProductInspection} ProductInspection={ProductInspection} setSpecialPacking={setSpecialPacking} SpecialPacking={SpecialPacking} ></CheckBoxItem>
 
 </View>
-
 
 <View style={{ width:'100%',marginTop: 10}}>
     <Text style={{fontWeight:600,marginBottom:10}}>Shipment:</Text>

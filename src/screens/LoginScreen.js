@@ -1,22 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { loginApi } from '../api/Auth/login';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import LoadingScreen from './LoadingScreen';
 import { verifyUser } from '../api/Auth/auth';
-
-
+import logo from '../assets/logo.png';
+import { useIsFocused } from '@react-navigation/native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 const LoginScreen = ({gobalLoader,setGobalLoader,navigation}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-const [error,setError]=useState('');
-const [loading,setLoaing]=useState(false);
-const [auth,setAuth]=useState(false);
-const [isLoading, setIsLoading] = useState(true);
-
-
-
-
+  const [error,setError]=useState('');
+  const [loading,setLoaing]=useState(false);
+  const [auth,setAuth]=useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const isFocused = useIsFocused();
+  const [hiddenPassword,setHiddenPassword]=useState(true);
 
 useEffect(() => {
   const checkAuthentication = async () => {
@@ -36,7 +35,7 @@ useEffect(() => {
   };
 
   checkAuthentication();
-}, [navigation]);
+}, [isFocused]);
 
 
 if(isLoading){
@@ -57,11 +56,8 @@ if(isLoading){
       if(log?.status === "Accepted"){
         try {
           await AsyncStorage.setItem('user', JSON.stringify(log?.data));
-          // console.log('User data stored successfully');
           navigation.navigate('Home')
-          // setGobalLoader(!gobalLoader)
         } catch (e) {
-          // console.log('Failed to store user data', e);
           setError('Something want wrong')
         }
 
@@ -79,12 +75,17 @@ if(isLoading){
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Login</Text>
+      <View>
+          <Image source={logo} style={{height:150,width:150}} />
+      </View>
+      {/* <Text style={styles.title}>Login</Text> */}
       {
         error && <Text style={styles.error}>{error}</Text>
       }
       
-      <TextInput
+    <View style={{width:'85%',marginStart:'auto'}}>
+    <View style={{width:'100%'}}>
+     <TextInput
         style={styles.input}
         placeholder="User Name"
         value={email}
@@ -92,13 +93,24 @@ if(isLoading){
         keyboardType="email-address"
         autoCapitalize="none"
       />
+     </View>
+      <View style={{width:'100%',position:'relative'}}>
       <TextInput
         style={styles.input}
         placeholder="Password"
         value={password}
         onChangeText={setPassword}
-        secureTextEntry
+        secureTextEntry = {hiddenPassword}
       />
+      <TouchableOpacity style={{position:'absolute',top:13,left:255}} onPress={()=>setHiddenPassword(!hiddenPassword)}>
+        {
+          hiddenPassword ? <Icon name="eye" size={20} color="black" /> : <Icon name="eye-slash" size={20} color="black" />
+        }
+
+      </TouchableOpacity>
+      </View>
+    </View>
+      
       {
         loading ?   <TouchableOpacity style={styles.buttonActive} onPress={handleLogin}>
         <ActivityIndicator size="small" color="#0000ff" />
@@ -106,9 +118,6 @@ if(isLoading){
         <Text style={styles.buttonText}>Login</Text>
       </TouchableOpacity>
       }
-     
-    
-      
     </View>
   );
 };

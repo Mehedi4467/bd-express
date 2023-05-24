@@ -6,6 +6,7 @@ import LoadingScreen from './LoadingScreen';
 import { verifyUserPath } from '../api/Auth/allPathVerify';
 import { pathLogOutApi } from '../api/Auth/pathLogOut';
 import TopNavbar from '../components/Home/TopNavbar';
+import EmptyData from '../components/NavBar/EmptyData';
 
 export default function ViewCarton({route,navigation}) {
 const [boxData,setBoxData]=useState([]);
@@ -47,7 +48,7 @@ const viwCartDetails = async(value)=>{
         {
            loading ? <View style={{marginTop:20}}>
             <LoadingScreen></LoadingScreen>
-           </View> :    <>
+           </View> :!loading && boxData && boxData.length <=0  ? <View style={{height:'100%',width:'100%',marginTop:100}}><EmptyData></EmptyData></View> :   <>
            {
               boxData && boxData?.map((item,index)=> <View key={index} style={{backgroundColor:'white',marginHorizontal:10,marginTop:8,marginBottom:8}}>
                <Card style={{backgroundColor:'white'}} >

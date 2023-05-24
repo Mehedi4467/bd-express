@@ -5,7 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 
-export default function Currency({setVisiblecurrency,setPaymentCurrency,visibleCurrency}) {
+export default function Currency({setVisiblecurrency,setPaymentCurrency,visibleCurrency,setPayment}) {
 
     const [curency,setCurency]=useState(0);
     const [id,setId]=useState('Payment');
@@ -33,6 +33,12 @@ export default function Currency({setVisiblecurrency,setPaymentCurrency,visibleC
           currency:userInfo?.country,
           amount:+value
         });
+        setPayment({
+          name:'Payment',
+          status:true,
+          currency:userInfo?.country,
+          amount:+value
+        })
         setVisiblecurrency(false);
       }
     }
@@ -40,6 +46,10 @@ export default function Currency({setVisiblecurrency,setPaymentCurrency,visibleC
     
     const handleDisMis = ()=>{
       setVisiblecurrency(false);
+      setPayment({
+        name:'',
+        status:false,
+      })
     }
 
 

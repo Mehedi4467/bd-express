@@ -10,8 +10,10 @@ const containerStyle = {backgroundColor: 'white', padding: 20,margin:10};
     <Modal visible={openReturnModal} contentContainerStyle={containerStyle} dismissable={!openReturnModal} onDismiss={openReturnModal}>
       <View style={{}}>
           <TextInput
-            style={{width:'100%',height:100}}
+            style={{width:'100%',height:100,backgroundColor:'#fff'}}
             mode="outlined"
+            multiline
+           numberOfLines={4}
             label="Write Return Reason"
             placeholder="Return Reason"
             onChangeText={(value)=>setReason(value)}

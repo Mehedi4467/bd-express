@@ -2,12 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { View,Text, TextInput, Button, StyleSheet, TouchableOpacity } from 'react-native';
 import { verifyTracking } from '../../api/BookingApi/VerifyTracking';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { useNavigation } from '@react-navigation/native';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { pathLogOutApi } from '../../api/Auth/pathLogOut';
 import { verifyUserPath } from '../../api/Auth/allPathVerify';
 import { deepCheckTrackingId } from '../../api/BookingApi/deepCheck';
 import ReturnPOpModal from '../Modal/ReturnPOpModal';
-const HomePage = ({setCode,code,img}) => {
+import { viewUpdate } from '../../api/BookingApi/updateBookingGetApi';
+import UpdateNoticeModal from '../Modal/UpdateNoticeModal';
+const HomePage = ({setCode,code,img,setImg}) => {
 const navigation = useNavigation();
 const [inputCode,setInputCode]=useState(code || '');
 const [trackingMsg,setTrackingMsg]=useState('');
@@ -15,10 +17,18 @@ const [trackingLoading,setTRackingLoading]=useState(false);
 const [trackingVerifyData,setTrackingVerifyData]=useState([]);
 const [createBooking,setCreateBooking]=useState(false);
 const [openReturn,setReturn]=useState(false);
+const [openExtraWork,setExtraWork]=useState(false);
 const [returnData,setReturnData]=useState({
   tracking_id: '',
   msg:'',
 })
+
+const isFocused = useIsFocused();
+// console.log(isFocused)
+
+useEffect(()=>{
+  !code && setInputCode('')
+},[isFocused])
 
   const handlePress = async() => {
     const x = await verifyUserPath();
@@ -28,13 +38,15 @@ const [returnData,setReturnData]=useState({
             setLoading(false);
       }else{
         navigation.navigate('booking',{id:inputCode,TRimg:img});
+        setCode('');
+        setImg('');
       }
-    
   }
 
-  const updateBooking = (BId,trId)=>{
-    navigation.navigate('update',{trackingID: trId,BookingID :BId });
-  }
+  // const updateBooking = (BId,trId)=>{
+  //   navigation.navigate('update',{trackingID: trId,BookingID :BId });
+  //   setCode('');
+  // }
 
   // const deepCheck = async(value) => {
   //   const x = await verifyUserPath();
@@ -59,7 +71,6 @@ const [returnData,setReturnData]=useState({
     }
 
   },[inputCode])
-  
   const verifyTrackingId =async()=>{
     setTRackingLoading(true);
 const verifyTI =await verifyTracking(inputCode);
@@ -76,14 +87,32 @@ if(verifyTI?.status === "Accepted"){
     }else{
       setCreateBooking(false);
       navigation.navigate('check',{id:inputCode,data:check});
+      setCode('');
     }
     
-  }else if(verifyTI?.data?.status === 2){
-    setReturn(true);
-    setReturnData({
-      tracking_id:verifyTI?.data?.tracking_id,
-      msg:verifyTI?.data?.msg
-    })
+  }
+  
+  else if(verifyTI?.data?.status === 2){
+    setCreateBooking(true);
+    // setReturn(true);
+    // setReturnData({
+    //   tracking_id:verifyTI?.data?.tracking_id,
+    //   msg:verifyTI?.data?.msg,
+    //   bookin_id:verifyTI?.data?.booking
+    // })
+  }
+  
+  else if(verifyTI?.data?.status === 1){
+    const z = await viewUpdate(verifyTI?.data?.booking);
+    if(z?.data?.primary_data?.extra_work?.length === 1 && z?.data?.primary_data?.extra_work[0]?.name === "Payment"){
+      setExtraWork(false);
+    }else{
+      setExtraWork({
+        data: z?.data?.primary_data?.extra_work,
+        booking:verifyTI?.data?.booking,
+        trackingID : verifyTI?.data?.tracking_id
+      });
+    }    
   }
 
 }else{
@@ -127,19 +156,27 @@ if(verifyTI?.status === "Accepted"){
         onPress={handlePress}
       ><Text style={styles.buttonText}>Create Booking</Text>
       </TouchableOpacity>  
-      </>
-      : inputCode && trackingVerifyData?.status === 'Accepted' && trackingVerifyData?.data?.status == 1 ? <TouchableOpacity
-            style={styles.button}
-            onPress={()=>updateBooking(trackingVerifyData?.data?.booking,trackingVerifyData?.data?.tracking_id)}
-          ><Text style={styles.buttonText}>Update Booking</Text>
-          </TouchableOpacity> : ''
+      </> : inputCode && trackingVerifyData?.status === 'Accepted' && trackingVerifyData?.data?.status == 2 && createBooking ? <>
+     <TouchableOpacity
+        style={styles.button}
+        onPress={handlePress}
+      ><Text style={styles.buttonText}>Create Booking</Text>
+      </TouchableOpacity>  
+      </> : <Text></Text>
+      // : inputCode && trackingVerifyData?.status === 'Accepted' && trackingVerifyData?.data?.status == 1 ? <TouchableOpacity
+      //       style={styles.button}
+      //       onPress={()=>updateBooking(trackingVerifyData?.data?.booking,trackingVerifyData?.data?.tracking_id)}
+      //     ><Text style={styles.buttonText}>Update Booking</Text>
+      //     </TouchableOpacity> : ''
       }
-{
-  openReturn && <ReturnPOpModal navigation={navigation} returnData={returnData} setReturnData={setReturnData} openReturn={openReturn} setReturn={setReturn}></ReturnPOpModal>
-}
+      {
+        openReturn && <ReturnPOpModal navigation={navigation} returnData={returnData} setReturnData={setReturnData} openReturn={openReturn} setReturn={setReturn}></ReturnPOpModal>
+      }
 
-
-      </View>
+      {
+        openExtraWork && <UpdateNoticeModal navigation={navigation} setInputCode={setInputCode} setCode={setCode} openExtraWork={openExtraWork} setExtraWork={setExtraWork} ></UpdateNoticeModal>
+      }
+  </View>
   
   );
 }
@@ -163,6 +200,7 @@ const styles = StyleSheet.create({
   },
   input: {
     width: '100%',
+    backgroundColor:'#fff',
     height: 40,
     borderColor: '#00aeef',
     borderRadius:5,

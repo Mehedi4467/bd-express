@@ -2,11 +2,13 @@ import { View, Text } from 'react-native'
 import React, { useContext } from 'react'
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {  Divider, Menu } from 'react-native-paper';
-import MyContext from '../../utility/MyContext';
 import { pathLogOutApi } from '../../api/Auth/pathLogOut';
-export default function NavBar({navigation}) {
+export default function NavBar({navigation,primaryData}) {
 
-    const { primaryData, setRefatchData,refetchDatar } = useContext(MyContext);
+    // const { primaryData, setRefatchData,refetchDatar } = useContext(MyContext);
+
+
+
 
   return (
 <View style={{position:'absolute',right:0,top:125 , backgroundColor:'#fff'}}>
@@ -19,11 +21,14 @@ export default function NavBar({navigation}) {
     </View>
     <Divider />
     <View>
-   <Menu.Item style={{flexDirection:'row',alignItems:'center'}} leadingIcon={() =><Icon name="sign-out-alt" size={20} color="#1c75bc" />} onPress={()=>{
-    pathLogOutApi();
-    navigation.navigate("Login")
-   
-    
+   <Menu.Item style={{flexDirection:'row',alignItems:'center'}} leadingIcon={() =><Icon name="sign-out-alt" size={20} color="#1c75bc" />} onPress={async()=>{
+   const a =await pathLogOutApi();
+   if(a?.status){
+    navigation.navigate("Login");
+   }else{
+      navigation.navigate("Login")
+   }
+
     }
 } title="sign-out" /> 
 

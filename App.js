@@ -3,20 +3,20 @@ import MainScreen from './src/screens/MainScreen';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginScreen from './src/screens/LoginScreen';
 import { NavigationContainer } from '@react-navigation/native';
-import {  Text, View } from 'react-native';
+import {  View } from 'react-native';
 import { useEffect, useState } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { verifyUser } from './src/api/Auth/auth';
-import LoadingScreen from './src/screens/LoadingScreen';
+// import AsyncStorage from '@react-native-async-storage/async-storage';
+// import { verifyUser } from './src/api/Auth/auth';
+// import LoadingScreen from './src/screens/LoadingScreen';
 import Shipment from './src/screens/Shipment';
 import Booking from './src/screens/Booking';
 import { Divider, Menu, Provider as PaperProvider } from 'react-native-paper';
-import Icon from 'react-native-vector-icons/FontAwesome5';
+// import Icon from 'react-native-vector-icons/FontAwesome5';
 // import Icon from 'react-native-vector-icons/FontAwesome';
-import { logOut } from './src/utility/LogOut';
+// import { logOut } from './src/utility/LogOut';
 import { auxDataApi } from './src/api/Shipment/VerifyShipment';
 import MyContext from './src/utility/MyContext';
-import NavBar from './src/components/NavBar/NavBar';
+// import NavBar from './src/components/NavBar/NavBar';
 import ViewCarton from './src/screens/ViewCarton';
 import CBMCalculator from './src/screens/CBMCalculator';
 import CbmScreen from './src/screens/CbmScreen';
@@ -26,9 +26,9 @@ const Stack = createNativeStackNavigator();
 
 export default function App() {
 
-  const [isNavOpen, setIsNavOpen] = useState(false);
+  // const [isNavOpen, setIsNavOpen] = useState(false);
 // const [auth,setAuth]=useState(false);
-const [gobalLoader,setGobalLoader]=useState(false);
+// const [gobalLoader,setGobalLoader]=useState(false);
 
 
 const [primaryData,setPrimaryData]=useState([]);

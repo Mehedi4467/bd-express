@@ -1,11 +1,11 @@
 import { View, StyleSheet,ScrollView, TouchableOpacity, Text } from 'react-native'
-import React, { useCallback, useContext, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { ActivityIndicator, Provider } from 'react-native-paper';
 import GeneralBooking from '../components/BookingComponent/GeneralBooking';
 import CartonDetails from '../components/BookingComponent/CartonDetails';
 import BookingItemModal from '../components/Modal/BookingItemModal';
 import Currency from '../components/Modal/Currency';
-import MyContext from '../utility/MyContext';
+// import MyContext from '../utility/MyContext';
 import { submitBookingApi } from '../api/BookingApi/SubmitApi';
 import Congo from '../components/Modal/Congro';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -22,12 +22,10 @@ import { submitReturnApi } from '../api/BookingApi/returnApi';
 
 
 export default function Booking({route,navigation}) {
-
   const [screenLoading,setScreen]=useState(false);
   const [loading,setLoading]=useState(false);
   const [errorMsg,setErrorMsg]=useState('');
   const [congoMsg,setCongoMsg]=useState(false);
-  // const { primaryData, setRefatchData,refetchDatar } = useContext(MyContext);
   const [input1, setInput1] = useState(route?.params?.id || '');
   const [extraWork,setExtraWork]=useState('None');
   const [shippingMark,setShippingMark]=useState('');
@@ -37,16 +35,46 @@ export default function Booking({route,navigation}) {
   const [returnLoading,setREturnLoading]=useState(false);
   const [returnError,setReturnError]=useState('');
   const [reason,setReason]=useState('');
+  const [extraWorkData,setExtraWorkData]=useState([{
+    name:'None',
+    status:true,
+  }]);
+
+  const [SpecialPacking,setSpecialPacking]=useState({
+    name:'',
+    status:false,
+  })
+  const [ProductInspection,setProductInspection]=useState({
+    name:'',
+    status:false,
+  })
+  const [PackedbyWarehouse,setPackedbyWarehouse]=useState({
+    name:'',
+    status:false,
+  })
+
+  const [payment,setPayment]=useState({
+    name:'',
+    status:false
+  });
+
+
+useEffect(()=>{
+const extraData = [SpecialPacking,ProductInspection,PackedbyWarehouse,payment];
+const exist = extraData?.filter(item => item?.status && item);
+setExtraWorkData(exist);
+},[SpecialPacking,ProductInspection,PackedbyWarehouse,payment])
+
+
+// console.log(extraWorkData)
+
   const auxData = async()=>{
     const data =await auxDataApi();
-    // console.log(data)
     setprimaryData(data)
   }
   useEffect(()=>{
     auxData()
   },[route?.params?.id])
-
-  // const [modalINdex,setModalIndex]=useState(0);
 
   const [country,setCountry]=useState('');
   const [checked, setChecked] = useState(primaryData?.data?.shipping_company[0]?.shipping_mark || '');
@@ -67,9 +95,6 @@ useEffect(()=>{
     setScreen(true)
   }
 },[primaryData])
-
-
-
 
 const [formValues, setFormValues] = useState([]);
 const [openINdex,setOpenIndex]=useState(0);
@@ -97,19 +122,6 @@ const showModal = useCallback((value) => {
     setOpenIndex(value);
   }
 },[formValues]) 
-// const showModal = useCallback((value) => {
-//   if(value == formValues[value]?.items[0]?.index){
-//     setVisible(true);
-//     setOpenIndex(value);
-//   }
-// },[formValues]) 
-
-
-
-// const hideModal = () => setVisible(false);
-
-
-
 
 
 useEffect(()=>{
@@ -136,7 +148,7 @@ const submitBookingData = async()=>{
   setLoading(true);
   const finatData = FinalArray(formValues)
 
-  if(input1 && Shipment && paymentCurrency && checked && shippingMark && country && finatData){
+  if(input1 && Shipment && checked && shippingMark && country && finatData){
     const submitData = {
       tracking_id:input1,
       booking:false,
@@ -145,7 +157,7 @@ const submitBookingData = async()=>{
         origin:country,
         destination:"BD"
     },
-      extra_work: paymentCurrency,
+      extra_work: extraWorkData,
       shipping_mark :{
       company_mark:checked,
       client:shippingMark
@@ -156,8 +168,6 @@ const submitBookingData = async()=>{
 
 
     const dataSubmit = await submitBookingApi(submitData);
-    // console.log('main data',dataSubmit)
-
     if(dataSubmit?.status){
       if(route?.params?.TRimg && dataSubmit?.booking_id){
         const formData = new FormData();
@@ -185,7 +195,6 @@ const submitBookingData = async()=>{
     }
    
   }
-
   else{
     console.log('error');
     setErrorMsg('You must fill all fields!');
@@ -228,7 +237,7 @@ const submitReturnREson = async()=>{
     screenLoading ? <LoadingScreen></LoadingScreen>: <ScrollView scrollEnabled={!visible}>
     <View style={styles.container}>
       <View>
-        <GeneralBooking paymentCurrency = {paymentCurrency} setCountry={setCountry} country={country} primaryData={primaryData} setPaymentCurrency={setPaymentCurrency} input1={input1} setInput1={setInput1} checked={checked} setChecked={setChecked} extraWork={extraWork} setExtraWork={setExtraWork} shippingMark={shippingMark} setShippingMark={setShippingMark} Shipment={Shipment} setShipment={setShipment}  >
+        <GeneralBooking paymentCurrency = {paymentCurrency} setCountry={setCountry} country={country} primaryData={primaryData} setPaymentCurrency={setPaymentCurrency} input1={input1} setInput1={setInput1} checked={checked} setChecked={setChecked} extraWork={extraWork} setExtraWork={setExtraWork} shippingMark={shippingMark} setShippingMark={setShippingMark} Shipment={Shipment} setShipment={setShipment} setPayment={setPayment} payment={payment} setPackedbyWarehouse={setPackedbyWarehouse} PackedbyWarehouse={PackedbyWarehouse} setProductInspection={setProductInspection} ProductInspection={ProductInspection} setSpecialPacking={setSpecialPacking} SpecialPacking={SpecialPacking}>
         </GeneralBooking>
       </View>
       <View style={{marginBottom:30,paddingBottom:20,zIndex:-1}}>
@@ -259,7 +268,7 @@ const submitReturnREson = async()=>{
        openReturnModal &&  <ReturnModal returnError={returnError} setReturnError={setReturnError} returnLoading={returnLoading} submitReturnREson={submitReturnREson} setReason={setReason} openReturnModal={openReturnModal} setReturnModal={setReturnModal}></ReturnModal>
     }
   
-    <View style={{position:'absolute',bottom:0,width:'100%'}}>
+    <View style={{position:'absolute',bottom:0,width:'100%',backgroundColor:'#fff'}}>
     <View style={{flexDirection:'row',width:'100%',justifyContent:'space-between',gap:5}}>
         <View style={{width:'40%'}}>
               <TouchableOpacity
@@ -303,7 +312,7 @@ const submitReturnREson = async()=>{
  
     </View>
 
-    <Currency visibleCurrency={visibleCurrency} showModal={showModal} setVisiblecurrency={setVisiblecurrency} extraWork={extraWork} setPaymentCurrency={setPaymentCurrency}></Currency>
+    <Currency setPayment={setPayment} visibleCurrency={visibleCurrency} showModal={showModal} setVisiblecurrency={setVisiblecurrency} extraWork={extraWork} setPaymentCurrency={setPaymentCurrency}></Currency>
 
   </Provider>
   )

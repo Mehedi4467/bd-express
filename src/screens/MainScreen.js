@@ -9,7 +9,7 @@ import TopNavbar from '../components/Home/TopNavbar';
 
 export default function MainScreen({navigation}) {
   const [code, setCode] = useState('');
-  const [img,setImg]=useState('')
+  const [img,setImg]=useState('');
   const [stopScanner, setScannerClose] = useState(true);
   const [inputCode,setInputCode]=useState('');
   const [isNavOpen, setIsNavOpen] = useState(false);
@@ -37,7 +37,7 @@ export default function MainScreen({navigation}) {
     <TopNavbar setIsNavOpen={setIsNavOpen} isNavOpen={isNavOpen} navigation={navigation} topNav = {true}></TopNavbar>
     </View>
       {stopScanner ? <View style={{ paddingLeft: 20, paddingRight: 20}}>
-        <HomePage code={code} img={img} setCode={setCode} inputCode={inputCode} setInputCode={setInputCode}></HomePage>
+        <HomePage code={code} img={img} setImg={setImg} setCode={setCode} inputCode={inputCode} setInputCode={setInputCode}></HomePage>
       </View> : <Scanner setScannerClose={setScannerClose}  setCode={setCode} setImg={setImg} code={code}></Scanner>}
 
       <View style={styles.Bottomcontainer}>

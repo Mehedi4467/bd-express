@@ -1,19 +1,32 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { View, Image, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import logo from '../../assets/logo.png';
 import Icon from 'react-native-vector-icons/FontAwesome';
 // import { useNavigation } from '@react-navigation/native';
 // import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
-import MyContext from '../../utility/MyContext';
 import NavBar from '../NavBar/NavBar';
+import { auxDataApi } from '../../api/Shipment/VerifyShipment';
 
 
 
 export default function TopNavbar({isNavOpen,setIsNavOpen,topNav}) {
   const navigation = useNavigation();
+
+const [primaryData,setPrimaryData]=useState([]);
+
+const auxData = async()=>{
+  const data =await auxDataApi();
+  // console.log(data)
+  setPrimaryData(data)
+}
+
+useEffect(()=>{
+  auxData();
+},[isNavOpen])
+
   // const route = useRoute();
-  const { primaryData, setRefatchData,refetchDatar } = useContext(MyContext);
+
   // console.log('coin',primaryData?.data?.wallet)
 
   // const logOut= async()=>{
@@ -55,7 +68,7 @@ export default function TopNavbar({isNavOpen,setIsNavOpen,topNav}) {
     </View>
     {
   isNavOpen &&  
-  <NavBar navigation={navigation}></NavBar>
+  <NavBar navigation={navigation} primaryData={primaryData}></NavBar>
 }
     </>
   );

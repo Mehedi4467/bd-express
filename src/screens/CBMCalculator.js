@@ -66,6 +66,39 @@ const subMiteCBM =async()=>{
     setErrorMsg('You must fill all fields!');
   }
 }
+const UpdatesubMiteCBM =async()=>{
+  setLoading(true);
+  if(length && width && height){
+    const cbmCal = (+length * +width * +height) / 1000000;
+    // console.log(cbmCal);
+    const allData  = {
+      carton : route?.params?.id,
+      length:+length,
+      width:+width,
+      height:+height,
+      cbm:cbmCal
+    }
+
+  const x = await verifyUserPath();
+  if(!x?.status || x?.exception === 'yes'){
+    pathLogOutApi();
+    navigation.navigate('Login');
+  }else{
+    const cbmSubmited = await SubmitShipmentApi(allData);
+    if(cbmSubmited?.status){
+     navigation.navigate('cbm');
+     setLoading(false);
+    }else{
+    //  console.log("somthing want wrong");
+     setErrorMsg('somthing want wrong');
+    //  setLoading(false);
+    }
+  }
+
+  }else{
+    setErrorMsg('You must fill all fields!');
+  }
+}
 
 
   return (
@@ -123,7 +156,7 @@ const subMiteCBM =async()=>{
     {
       loading ?  <TouchableOpacity style={{backgroundColor:'#00aeef',padding:10,borderRadius:5}}>
       <ActivityIndicator size="small" color="#0000ff" />
-      </TouchableOpacity> : auxData?.length ?  <TouchableOpacity style={{backgroundColor:'#00aeef',padding:10,borderRadius:5}} onPress={()=>subMiteCBM()} >
+      </TouchableOpacity> : auxData?.length ?  <TouchableOpacity style={{backgroundColor:'#00aeef',padding:10,borderRadius:5}} onPress={()=>UpdatesubMiteCBM()} >
           <Text style={{color:'#fff',textAlign:'center'}}>Update CBM</Text>
       </TouchableOpacity> : <TouchableOpacity style={{backgroundColor:'#00aeef',padding:10,borderRadius:5}} onPress={()=>subMiteCBM()} >
           <Text style={{color:'#fff',textAlign:'center'}}>CBM Submit</Text>

@@ -3,6 +3,8 @@ import React from 'react'
 import { ActivityIndicator, Modal, Portal } from 'react-native-paper';
 import { verifyUserPath } from '../../api/Auth/allPathVerify';
 import { pathLogOutApi } from '../../api/Auth/pathLogOut';
+import { removeReturnPercel } from '../../api/BookingApi/removeReturnPercel';
+import { verifyTracking } from '../../api/BookingApi/VerifyTracking';
 
 export default function ReturnPOpModal({setReturn,openReturn,setReturnData,returnData,navigation}) {
     const containerStyle = {backgroundColor: 'white', padding: 20,margin:10};
@@ -32,7 +34,6 @@ export default function ReturnPOpModal({setReturn,openReturn,setReturnData,retur
       } }>
       <Text style={{ color: 'white', fontSize: 16 }}>Cancel</Text>
     </TouchableOpacity>
-   
          <TouchableOpacity
         style={{
           backgroundColor: '#00aeef',
@@ -48,15 +49,16 @@ export default function ReturnPOpModal({setReturn,openReturn,setReturnData,retur
                 pathLogOutApi();
                 navigation.navigate('Login');
           }else{
-            setReturn(false);
-            navigation.navigate('booking',{id:returnData?.tracking_id,TRimg:''});
+            const m = await removeReturnPercel(returnData?.bookin_id);
+              if(m?.status){
+                  setReturn(false);
+                  navigation.navigate('booking',{id:returnData?.tracking_id,TRimg:''});
+              }
           }
         }}>
         <Text style={{ color: 'white', fontSize: 16 }}>Yes</Text>
       </TouchableOpacity>
     
-      
-
       </View>
       
     </Modal>

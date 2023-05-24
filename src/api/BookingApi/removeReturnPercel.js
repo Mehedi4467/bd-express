@@ -3,10 +3,12 @@ import {BASE_URL,APP_AUTHOR,APP_TOKEN} from '@env'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
-export const pathLogOutApi =async()=> {
+export const removeReturnPercel =async(booking)=> {
     const x = await AsyncStorage.getItem('user');
     const userInfo = JSON.parse(x);
-    const pathLogOut = await  axios.get(`${BASE_URL}/v1/scanner/china/log/out`,{
+
+    if(userInfo){
+        const data = await  axios.get(`${BASE_URL}/v1/scanner/china/operator/remove/tracking/return/percel?booking_id=${booking}`,{
             headers: {
                 Author: APP_AUTHOR,
                 "App-token":APP_TOKEN,
@@ -16,13 +18,15 @@ export const pathLogOutApi =async()=> {
               },
         })
         .then(response => {
-          return response.data;
+          return response?.data;
         })
         .catch(error => {
-          return error.response.data;
+          return error?.response?.data;
         });
-    await AsyncStorage.removeItem('user');
 
-   return pathLogOut;
+        return data;
+    }
 
+return null
+   
 }

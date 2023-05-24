@@ -113,13 +113,15 @@ const viewCarton = async(id)=>{
 
 
   return (
-<>
+    <>
   <View style={{backgroundColor:'#fff',position:'relative',zIndex:1}}>
       <TopNavbar setIsNavOpen={setIsNavOpen} isNavOpen={isNavOpen} navigation={navigation}></TopNavbar>
   </View>
-  
 
-  {
+    {
+      isLoading ? <View style={{marginTop:40}}>
+      <LoadingScreen></LoadingScreen>
+     </View> : 
     shipmentVeryfy === 'yes' ?
     <ScrollView style={{marginTop:20}}>
 <View style={{flexDirection: 'row',alignItems: 'center',justifyContent: 'flex-end'}}>
@@ -166,7 +168,11 @@ loading ? <TouchableOpacity style={styles.buttonActive} >
  </TouchableOpacity>
 }
   </View> : ''
-  }
+  
+    }
+
+  
+  
 </>
 
   );

@@ -2,8 +2,11 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { Divider, RadioButton, TextInput } from 'react-native-paper';
 import { Picker } from '@react-native-picker/picker';
+import CheckBoxItem from './CheckBoxItem';
+import UpdateCheckBox from './UpdateCheckBox';
 
-export default function GeneralUpdateBooking({input1,setInput1,checked,setChecked,extraWork,setExtraWork,shippingMark,setShippingMark,Shipment,setShipment,primaryData,setPaymentCurrency,country,setCountry,paymentCurrency}) {
+export default function GeneralUpdateBooking({input1,setInput1,checked,setChecked,extraWork,setExtraWork,shippingMark,setShippingMark,Shipment,setShipment,primaryData,setPaymentCurrency,country,setCountry,paymentCurrency,setPayment,payment,setPackedbyWarehouse,PackedbyWarehouse,setProductInspection,ProductInspection,setSpecialPacking,SpecialPacking,updateCheckBoxItem,setUpdateCheckBoxItem}) {
+  // console.log('dada',payment)
     const [countrySelect, setcountrySelect] = useState(country || '');
     const [suggestion,setSuggestion]=useState(false);
     const [selectedLanguage, setSelectedLanguage] = useState(Shipment || '');
@@ -108,9 +111,10 @@ export default function GeneralUpdateBooking({input1,setInput1,checked,setChecke
 
 <View style={{marginTop:20}}>
     <View>
-<Text style={{fontWeight:600}}>Extra Work: </Text>
+        <Text style={{fontWeight:600}}>Extra Work: </Text>
     </View>
-    <View style={{flexDirection:'row',flexWrap: 'wrap',width:'100%'}}>
+
+    {/* <View style={{flexDirection:'row',flexWrap: 'wrap',width:'100%'}}>
     <View style={{flexDirection:'row',alignItems:'center'}}>
       
       <RadioButton
@@ -180,7 +184,9 @@ export default function GeneralUpdateBooking({input1,setInput1,checked,setChecke
       </View>
 
 
-    </View>
+    </View> */}
+
+<UpdateCheckBox setUpdateCheckBoxItem={setUpdateCheckBoxItem} updateCheckBoxItem={updateCheckBoxItem} payment={payment} setPayment={setPayment} setPackedbyWarehouse={setPackedbyWarehouse} PackedbyWarehouse={PackedbyWarehouse} setProductInspection={setProductInspection} ProductInspection={ProductInspection} setSpecialPacking={setSpecialPacking} SpecialPacking={SpecialPacking} ></UpdateCheckBox>
 
 </View>
 

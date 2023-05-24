@@ -8,7 +8,6 @@ import LoadingScreen from './LoadingScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import CartonUpdateBooking from '../components/BookingComponent/CartonUpdateBooking';
 import { ActivityIndicator, Provider } from 'react-native-paper';
-import Currency from '../components/Modal/Currency';
 import BookingItemUpdateModal from '../components/Modal/BookingItemUpdateModal';
 import { imagesubmitBookingApi } from '../api/BookingApi/imageUpload';
 import { submitBookingApi } from '../api/BookingApi/SubmitApi';
@@ -30,7 +29,6 @@ export default function UpdateBooking({route,navigation}) {
         currency:false,
         amount: 0
       });
-      const [screenLoading,setScreen]=useState(false);
       const [errorMsg,setErrorMsg]=useState('');
       const [country,setCountry]=useState('');
       const [primaryData,setprimaryData]=useState(false);
@@ -44,11 +42,43 @@ export default function UpdateBooking({route,navigation}) {
       const [openINdex,setOpenIndex]=useState(0);
       const [formValues, setFormValues] = useState([]);
       const [congoMsg,setCongoMsg]=useState(false);
+      // const [mainData,setMainData]=useState([]);
       const [openReturnModal,setReturnModal]=useState(false);
       const [reason,setReason]=useState('');
-
       const [returnLoading,setREturnLoading]=useState(false);
       const [returnError,setReturnError]=useState('');
+      const [updateCheckBoxItem,setUpdateCheckBoxItem]=useState(false);
+      const [extraWorkDatas,setExtraWorkDatas]=useState([])
+
+      const [extraWorkData,setExtraWorkData]=useState([{
+        name:'None',
+        status:true,
+      }]);
+
+
+// console.log(mainData)
+
+      const [SpecialPacking,setSpecialPacking]=useState({
+        name:'',
+        status:false,
+      })
+      const [ProductInspection,setProductInspection]=useState({
+        name:'',
+        status:false,
+      })
+      const [PackedbyWarehouse,setPackedbyWarehouse]=useState({
+        name:'',
+        status:false,
+      })
+    
+      const [payment,setPayment]=useState({
+        name:'',
+        status:false
+      });
+
+
+
+
 
     const updateGetDAta = async(bookingId,trackingID)=>{
     const z = await viewUpdate(bookingId);
@@ -58,8 +88,45 @@ export default function UpdateBooking({route,navigation}) {
     setInput1(trackingID);
     setExtraWork(z?.data?.primary_data?.extra_work?.id);
     setChecked(z?.data?.primary_data?.shipping_mark?.company_mark);
-    setFormValues(z?.data?.carton_data);
+    setFormValues([...z?.data?.carton_data]);
+    setExtraWorkDatas(z?.data?.primary_data?.extra_work);
+    // setMainData([...z?.data?.carton_data]);
 }
+
+useEffect(()=>{
+
+  for(let item of extraWorkDatas){
+    if(item?.name === "Payment"){
+      setPayment(item);
+    }else if(item?.name === "Packed by Warehouse"){
+      setPackedbyWarehouse(item)
+    }else if(item?.name === "Product Inspection"){
+      setProductInspection(item);
+    }
+    else if(item?.name === "Special Packing"){
+      setSpecialPacking(item);
+    }
+  }
+
+},[extraWorkDatas]);
+
+useEffect(()=>{
+  if(payment?.status){
+    // setExtraWork(payment);
+    setVisiblecurrency(true);
+  }else{
+    setVisiblecurrency(false);
+  }
+ 
+},[updateCheckBoxItem])
+
+
+useEffect(()=>{
+  const extraData = [SpecialPacking,ProductInspection,PackedbyWarehouse,payment];
+  const exist = extraData?.filter(item => item?.status && item);
+  setExtraWorkData(exist);
+  },[SpecialPacking,ProductInspection,PackedbyWarehouse,payment])
+
 
 
 useEffect(()=>{
@@ -79,11 +146,11 @@ const userDetails = useCallback(async() => {
     userDetails();
   },[]);
 
-  useEffect(()=>{
-    if(extraWork ==="Payment"){
-      setVisiblecurrency(true)
-    }
-  },[extraWork]);
+  // useEffect(()=>{
+  //   if(extraWork?.name ==="Payment"){
+  //     setVisiblecurrency(true)
+  //   }
+  // },[extraWork]);
 
   const showModal = useCallback((value) => {
     if(value == formValues[value]?.item[0]?.index){
@@ -95,7 +162,6 @@ const userDetails = useCallback(async() => {
 
 const auxData = async()=>{
     const data =await auxDataApi();
-    // console.log(data)
     setprimaryData(data);
     // setChecked(data?.data?.shipping_company[0]?.shipping_mark)
   }
@@ -106,7 +172,7 @@ const auxData = async()=>{
 
   const submitBookingData = async()=>{
     setLoading(true);
-    const finatData = UpdateFinalArray(formValues);
+    const finatData = await UpdateFinalArray(formValues,route?.params?.BookingID);
     if(input1 && Shipment && paymentCurrency && checked && shippingMark && country && finatData){
       const submitData = {
         tracking_id:input1,
@@ -116,15 +182,18 @@ const auxData = async()=>{
           origin:country,
           destination:"BD"
       },
-        extra_work: paymentCurrency,
+        extra_work: extraWorkData.length > 0 ? extraWorkData : [{name:'None',status:true}],
         shipping_mark :{
         company_mark:checked,
         client:shippingMark
         },
         cartons:finatData?.cartons,
-        mother_carton:finatData?.mother_carton,
+        mother_carton:finatData?.motherCartonMainValue,
       }
   
+// console.log(submitData)
+      // setLoading(false);
+      // setErrorMsg('');
   
       const dataSubmit = await submitBookingApi(submitData);
       // setCongoMsg(true);
@@ -159,7 +228,6 @@ const auxData = async()=>{
      
     } 
     else{
-      console.log('error');
       setLoading(false);
       setErrorMsg('');
       setErrorMsg('You must fill all fields!');
@@ -167,12 +235,12 @@ const auxData = async()=>{
   
   }
 
-
   const submitReturnREson = async()=>{
     setREturnLoading(true);
     if(reason && route?.params?.trackingID){
       const value = {
         tracking_id:route?.params?.trackingID,
+        booking:route?.params?.BookingID,
         reason:reason
       }
       const returnReson = await submitReturnApi(value);
@@ -199,10 +267,10 @@ const auxData = async()=>{
       <TopNavbar setIsNavOpen={setIsNavOpen} isNavOpen={isNavOpen} navigation={navigation}></TopNavbar>
      </View>
      {
-        primaryData ? <ScrollView>
+        primaryData && formValues.length >0 ? <ScrollView>
           <View style={{flex: 1,marginHorizontal:10,marginTop:10}}>
         <View>
-          <GeneralUpdateBooking paymentCurrency = {paymentCurrency} setCountry={setCountry} country={country} primaryData={primaryData} setPaymentCurrency={setPaymentCurrency}  input1={input1} setInput1={setInput1} checked={checked} setChecked={setChecked} extraWork={extraWork} setExtraWork={setExtraWork} shippingMark={shippingMark} setShippingMark={setShippingMark} Shipment={Shipment} setShipment={setShipment}  >
+          <GeneralUpdateBooking updateCheckBoxItem={updateCheckBoxItem} setUpdateCheckBoxItem={setUpdateCheckBoxItem} paymentCurrency = {paymentCurrency} setCountry={setCountry} country={country} primaryData={primaryData} setPaymentCurrency={setPaymentCurrency}  input1={input1} setInput1={setInput1} checked={checked} setChecked={setChecked} extraWork={extraWork} setExtraWork={setExtraWork} shippingMark={shippingMark} setShippingMark={setShippingMark} Shipment={Shipment} setShipment={setShipment} setPayment={setPayment} payment={payment} setPackedbyWarehouse={setPackedbyWarehouse} PackedbyWarehouse={PackedbyWarehouse} setProductInspection={setProductInspection} ProductInspection={ProductInspection} setSpecialPacking={setSpecialPacking} SpecialPacking={SpecialPacking} >
           </GeneralUpdateBooking> 
         </View>
 
@@ -233,7 +301,7 @@ const auxData = async()=>{
 
 <View style={{position:'absolute',bottom:0,width:'100%',backgroundColor:'#fff'}}>
      <View style={{flexDirection:'row',width:'100%',justifyContent:'space-between',gap:5}}>
-     <View style={{width:'40%'}}>
+      <View style={{width:'40%'}}>
        <TouchableOpacity
         style={{
           backgroundColor: '#d90429',
@@ -248,7 +316,7 @@ const auxData = async()=>{
         >
         <Text style={{ color: 'white', fontSize: 16 }}>Return</Text>
     </TouchableOpacity>
-       </View>
+       </View> 
     <View style={{width:'60%'}}>
     {
         loading ?  <TouchableOpacity style={styles.buttonActive} >
@@ -273,15 +341,14 @@ const auxData = async()=>{
     </View>
 
 
-    
 
-      {
+
+     {
        openReturnModal &&  <ReturnModal returnError={returnError} setReturnError={setReturnError} returnLoading={returnLoading} submitReturnREson={submitReturnREson} setReason={setReason} openReturnModal={openReturnModal} setReturnModal={setReturnModal}></ReturnModal>
-      }
-
+      } 
 
         {
-          extraWork === "Payment" && <UpdateCurrency visibleCurrency={visibleCurrency} showModal={showModal} setVisiblecurrency={setVisiblecurrency} extraWork={extraWork} setPaymentCurrency={setPaymentCurrency} paymentCurrency={paymentCurrency}></UpdateCurrency>
+         visibleCurrency && updateCheckBoxItem && <UpdateCurrency setUpdateCheckBoxItem={setUpdateCheckBoxItem} payment={payment} setPayment={setPayment} visibleCurrency={visibleCurrency} showModal={showModal} setVisiblecurrency={setVisiblecurrency} extraWork={extraWork} setPaymentCurrency={setPaymentCurrency} paymentCurrency={paymentCurrency}></UpdateCurrency>
         }
 
 
