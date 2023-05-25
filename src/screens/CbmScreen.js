@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import TopNavbar from '../components/Home/TopNavbar'
 import { Card, TextInput } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { auxDataApi } from '../api/Shipment/VerifyShipment';
+// import { auxDataApi } from '../api/Shipment/VerifyShipment';
 import { pathLogOutApi } from '../api/Auth/pathLogOut';
 import { verifyUserPath } from '../api/Auth/allPathVerify';
 import { auxCBMDataApi } from '../api/Cbm/setCBM';
@@ -60,6 +60,7 @@ export default function CbmScreen({navigation}) {
     <View style={{width:'100%',position:'relative'}}>
       <TextInput
           style={styles.input}
+          textColor="black"
           value={boxNumber}
           onChangeText={(value)=>setBoxNumber(value)}
           placeholder="Enter Carton Number"
@@ -138,6 +139,7 @@ const styles = StyleSheet.create({
       borderWidth: 1,
       marginBottom: 20,
       paddingHorizontal: 10,
-      backgroundColor:'#fff'
+      backgroundColor:'#fff',
+      color:'black'
     },
   });

@@ -42,6 +42,7 @@ export default function GeneralUpdateBooking({input1,setInput1,checked,setChecke
       <View style={styles.inputContainer}>
       <TextInput
         style={styles.input}
+        textColor="black"
         placeholder="Scanned Tracking Number"
         value={input1}
         onChangeText={(text) => setInput1(text)}
@@ -95,6 +96,7 @@ export default function GeneralUpdateBooking({input1,setInput1,checked,setChecke
                         primaryData?.data?.shipping_company &&  primaryData?.data?.shipping_company?.map((item,index)=> <View key={index} style={{flexDirection:'row',alignItems:'center'}}>
                   <RadioButton
                   value={item?.shipping_mark}
+                  color='#1c75bc'
                   status={ checked === item?.shipping_mark ? 'checked' : 'unchecked' }
                   onPress={() => setChecked(item?.shipping_mark)}
                   />
@@ -231,6 +233,7 @@ export default function GeneralUpdateBooking({input1,setInput1,checked,setChecke
                   borderTopRightRadius:5,
                   borderBottomRightRadius:5,
                   backgroundColor:'#fff'}}
+                  textColor="black"
                   placeholder="Shipping Mark"
                   value={shippingMark}
                   onChangeText={(text) => setShippingMark(text)}

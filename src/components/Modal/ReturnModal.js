@@ -14,6 +14,7 @@ const containerStyle = {backgroundColor: 'white', padding: 20,margin:10};
             mode="outlined"
             multiline
            numberOfLines={4}
+           textColor="black"
             label="Write Return Reason"
             placeholder="Return Reason"
             onChangeText={(value)=>setReason(value)}

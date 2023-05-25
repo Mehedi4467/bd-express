@@ -17,6 +17,7 @@ import ErrorModal from '../components/Modal/ErrorModal';
 import ReturnModal from '../components/Modal/ReturnModal';
 import { submitReturnApi } from '../api/BookingApi/returnApi';
 import UpdateCurrency from '../components/Modal/UpdateCurrency';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 const MemoizedCartonComponent = React.memo(CartonUpdateBooking);
 
 
@@ -267,7 +268,9 @@ const auxData = async()=>{
       <TopNavbar setIsNavOpen={setIsNavOpen} isNavOpen={isNavOpen} navigation={navigation}></TopNavbar>
      </View>
      {
-        primaryData && formValues.length >0 ? <ScrollView>
+        primaryData && formValues.length >0 ? <KeyboardAwareScrollView extraScrollHeight={200} enableOnAndroid={true} 
+        scrollToOverflowEnabled={true}
+        enableAutomaticScroll={true}>
           <View style={{flex: 1,marginHorizontal:10,marginTop:10}}>
         <View>
           <GeneralUpdateBooking updateCheckBoxItem={updateCheckBoxItem} setUpdateCheckBoxItem={setUpdateCheckBoxItem} paymentCurrency = {paymentCurrency} setCountry={setCountry} country={country} primaryData={primaryData} setPaymentCurrency={setPaymentCurrency}  input1={input1} setInput1={setInput1} checked={checked} setChecked={setChecked} extraWork={extraWork} setExtraWork={setExtraWork} shippingMark={shippingMark} setShippingMark={setShippingMark} Shipment={Shipment} setShipment={setShipment} setPayment={setPayment} payment={payment} setPackedbyWarehouse={setPackedbyWarehouse} PackedbyWarehouse={PackedbyWarehouse} setProductInspection={setProductInspection} ProductInspection={ProductInspection} setSpecialPacking={setSpecialPacking} SpecialPacking={SpecialPacking} >
@@ -278,7 +281,7 @@ const auxData = async()=>{
             <MemoizedCartonComponent  showModal={showModal} formValues={formValues} setFormValues={setFormValues} ></MemoizedCartonComponent>
         </View>
         </View>
-    </ScrollView>   : <View style={{marginTop:40}}><LoadingScreen></LoadingScreen></View>
+    </KeyboardAwareScrollView>   : <View style={{marginTop:40}}><LoadingScreen></LoadingScreen></View>
      }
 
 

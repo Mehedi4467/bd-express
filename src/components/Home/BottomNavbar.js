@@ -26,9 +26,6 @@ export default function BottomNavbar({ setScannerClose, stopScanner,navigation }
         navigation.navigate('Shipment', {name: 'Shipment'});
       }
     }
-
-   
-
   };
 
   return (

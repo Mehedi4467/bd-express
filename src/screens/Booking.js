@@ -1,5 +1,5 @@
 import { View, StyleSheet,ScrollView, TouchableOpacity, Text } from 'react-native'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { ActivityIndicator, Provider } from 'react-native-paper';
 import GeneralBooking from '../components/BookingComponent/GeneralBooking';
 import CartonDetails from '../components/BookingComponent/CartonDetails';
@@ -18,6 +18,7 @@ import { imagesubmitBookingApi } from '../api/BookingApi/imageUpload';
 import { auxDataApi } from '../api/Shipment/VerifyShipment';
 import ReturnModal from '../components/Modal/ReturnModal';
 import { submitReturnApi } from '../api/BookingApi/returnApi';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 
 
@@ -234,17 +235,20 @@ const submitReturnREson = async()=>{
     <TopNavbar setIsNavOpen={setIsNavOpen} isNavOpen={isNavOpen} navigation={navigation}></TopNavbar>
     </View>
   {
-    screenLoading ? <LoadingScreen></LoadingScreen>: <ScrollView scrollEnabled={!visible}>
+    screenLoading ? <LoadingScreen></LoadingScreen>: <KeyboardAwareScrollView extraScrollHeight={200} enableOnAndroid={true} 
+    scrollToOverflowEnabled={true}
+    enableAutomaticScroll={true} scrollEnabled={!visible}>
     <View style={styles.container}>
       <View>
-        <GeneralBooking paymentCurrency = {paymentCurrency} setCountry={setCountry} country={country} primaryData={primaryData} setPaymentCurrency={setPaymentCurrency} input1={input1} setInput1={setInput1} checked={checked} setChecked={setChecked} extraWork={extraWork} setExtraWork={setExtraWork} shippingMark={shippingMark} setShippingMark={setShippingMark} Shipment={Shipment} setShipment={setShipment} setPayment={setPayment} payment={payment} setPackedbyWarehouse={setPackedbyWarehouse} PackedbyWarehouse={PackedbyWarehouse} setProductInspection={setProductInspection} ProductInspection={ProductInspection} setSpecialPacking={setSpecialPacking} SpecialPacking={SpecialPacking}>
+        <GeneralBooking paymentCurrency = {paymentCurrency} setCountry={setCountry} country={country} primaryData={primaryData} setPaymentCurrency={setPaymentCurrency} input1={input1} setInput1={setInput1} checked={checked} setChecked={setChecked} extraWork={extraWork} setExtraWork={setExtraWork} shippingMark={shippingMark} setShippingMark={setShippingMark} Shipment={Shipment} setShipment={setShipment} setPayment={setPayment} payment={payment} setPackedbyWarehouse={setPackedbyWarehouse} PackedbyWarehouse={PackedbyWarehouse} setProductInspection={setProductInspection} ProductInspection={ProductInspection} setSpecialPacking={setSpecialPacking} SpecialPacking={SpecialPacking} >
         </GeneralBooking>
       </View>
       <View style={{marginBottom:30,paddingBottom:20,zIndex:-1}}>
-        <MemoizedCartonComponent  showModal={showModal} formValues={formValues} setFormValues={setFormValues} ></MemoizedCartonComponent>
+        <MemoizedCartonComponent showModal={showModal} formValues={formValues} setFormValues={setFormValues} ></MemoizedCartonComponent>
       </View>
     </View>
-</ScrollView >
+</KeyboardAwareScrollView >
+
   }
  
 

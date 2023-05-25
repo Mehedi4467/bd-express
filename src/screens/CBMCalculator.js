@@ -116,10 +116,12 @@ const UpdatesubMiteCBM =async()=>{
 <View style={{marginBottom:10}}>
     <TextInput
       mode="outlined"
+      textColor="black"
       label="Length"
       keyboardType="numeric"
       style={{backgroundColor:'#fff'}}
       placeholder="Length"
+      
       value={length?.toString()}
       // defaultValue={auxData?.length?.toString()}
       right={<TextInput.Affix text="(cm)" />}
@@ -129,6 +131,7 @@ const UpdatesubMiteCBM =async()=>{
     <View style={{marginBottom:10}} >
     <TextInput
       mode="outlined"
+      textColor="black"
       keyboardType="numeric"
       label="Width"
       value={width?.toString()}
@@ -145,6 +148,7 @@ const UpdatesubMiteCBM =async()=>{
       keyboardType="numeric"
       style={{backgroundColor:'#fff'}}
       label="Height"
+      textColor="black"
       value={height?.toString()}
       placeholder="Height"
       onChangeText={(value)=>setheigth(value)}

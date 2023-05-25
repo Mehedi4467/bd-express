@@ -21,7 +21,7 @@ export default function NavBar({navigation,primaryData}) {
     </View>
     <Divider />
     <View>
-   <Menu.Item style={{flexDirection:'row',alignItems:'center'}} leadingIcon={() =><Icon name="sign-out-alt" size={20} color="#1c75bc" />} onPress={async()=>{
+   <Menu.Item color={'#1c75bc'} style={{flexDirection:'row',alignItems:'center',color:'#1c75bc'}} leadingIcon={() =><Icon name="sign-out-alt" size={20} color="#1c75bc" />} onPress={async()=>{
    const a =await pathLogOutApi();
    if(a?.status){
     navigation.navigate("Login");

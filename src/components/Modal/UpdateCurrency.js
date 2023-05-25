@@ -62,6 +62,7 @@ export default function UpdateCurrency({setVisiblecurrency,setPaymentCurrency,vi
             style={{width:'70%',height:45}}
             mode="outlined"
             label="Amount"
+            textColor="black"
             value={value.toString()}
             placeholder="Type Amount"
             onChangeText={(value)=>setValue(value)}

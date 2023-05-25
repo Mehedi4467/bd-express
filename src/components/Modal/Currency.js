@@ -66,6 +66,7 @@ export default function Currency({setVisiblecurrency,setPaymentCurrency,visibleC
             style={{width:'70%',height:45}}
             mode="outlined"
             label="Amount"
+            textColor="black"
             placeholder="Type Amount"
             onChangeText={(value)=>setValue(value)}
             keyboardType="numeric"

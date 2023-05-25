@@ -7,7 +7,6 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 export default function CartonDetails({formValues,setFormValues,showModal}) {
 
-  // console.log(formValues)
 
   const [cartons,setCarton]=useState(0);
   // const [disabled, setDisabled] = useState(false);
@@ -27,9 +26,15 @@ let handleChange = (i, name,value) => {
   let newFormValues = [...formValues];
   newFormValues[i][name] = value;
   setFormValues(newFormValues);
+  
 };
 
 
+// const onFocusView = (inputIndex)=>{
+
+//   scrollViewRef.current.scrollTo({ x: 0, y: 0, animated: true });
+//   console.log(inputRef.current.setNativeProps())
+// }
 
 
 
@@ -39,6 +44,7 @@ let handleChange = (i, name,value) => {
         <Text style={{fontWeight:600}}>Cartons: </Text>
         <TextInput
         placeholder="Carton Number"
+        textColor="black"
         value={cartons.toString()}
         keyboardType="numeric"
         onChangeText={(text) => setCarton(text)}
@@ -59,12 +65,13 @@ let handleChange = (i, name,value) => {
     </View>
     </View>
 
-    <View>
+    <View style={{color:'#fff'}}>
     <Text>Carton Number</Text>
     <TextInput
       // placeholder="Carton Number"
       value={item?.cartonNumber}
       keyboardType="numeric"
+      textColor="black"
       onChangeText={(text) => handleChange(index, 'cartonNumber',text)}
       style={{backgroundColor:'#fff', height:25,borderWidth: 1,width: 100}}
     />
@@ -74,8 +81,14 @@ let handleChange = (i, name,value) => {
     <TextInput
       value={item?.weigth}
       keyboardType="numeric"
+      textColor="black"
       onChangeText={(text) => handleChange(index, 'weigth',text)}
-      style={{backgroundColor:'#fff', height:25,borderWidth: 1,width: 60}}
+      style={{backgroundColor:'#fff', height:25,borderWidth: 1,width: 60,color: '#fff'}}
+      theme={{
+        colors: {
+          text: '#fff' // Change this to the desired text color
+        }
+      }}
     />
     </View>
 
@@ -101,6 +114,7 @@ let handleChange = (i, name,value) => {
     
     <RadioButton
         value="GZ"
+        color='#1c75bc'
         status={ item?.route === 'GZ' ? 'checked' : 'unchecked' }
         onPress={() => handleChange(index, 'route','GZ')}
       />
@@ -110,6 +124,7 @@ let handleChange = (i, name,value) => {
     
     <RadioButton
         value="HK"
+        color='#1c75bc'
         status={ item?.route === 'HK' ? 'checked' : 'unchecked' }
         onPress={() => handleChange(index, 'route',"HK")}
       />

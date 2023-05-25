@@ -7,7 +7,7 @@ import { verifyUser } from '../api/Auth/auth';
 import logo from '../assets/logo.png';
 import { useIsFocused } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-const LoginScreen = ({gobalLoader,setGobalLoader,navigation}) => {
+const LoginScreen = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error,setError]=useState('');

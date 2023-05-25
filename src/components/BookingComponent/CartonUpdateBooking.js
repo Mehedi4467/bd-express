@@ -29,6 +29,7 @@ export default function CartonUpdateBooking({formValues,setFormValues,showModal}
       <Text style={{fontWeight:600}}>Cartons: </Text>
       <TextInput
       placeholder="Carton Number"
+      textColor="black"
       disabled
       value={cartons.toString()}
       keyboardType="numeric"
@@ -55,6 +56,7 @@ formValues.length > 0 && formValues.map((item,index)=>
   <TextInput
     // placeholder="Carton Number"
     value={item?.mother_carton?.toString()}
+    textColor="black"
     keyboardType="numeric"
     onChangeText={(text) => handleChange(index, 'mother_carton',text)}
     style={{backgroundColor:'#fff', height:25,borderWidth: 1,width: 100}}
@@ -64,6 +66,7 @@ formValues.length > 0 && formValues.map((item,index)=>
   <Text>Weight</Text>
   <TextInput
     value={item?.weight?.toString()}
+    textColor="black"
     keyboardType="numeric"
     onChangeText={(text) => handleChange(index, 'weight',text)}
     style={{backgroundColor:'#fff', height:25,borderWidth: 1,width: 60}}
@@ -94,6 +97,7 @@ formValues.length > 0 && formValues.map((item,index)=>
 <View style={{flexDirection:'row',alignItems:'center'}}>
   
   <RadioButton
+  color='#1c75bc'
       value="GZ"
       status={ item?.route === 'GZ' ? 'checked' : 'unchecked' }
       onPress={() => handleChange(index, 'route','GZ')}
@@ -103,6 +107,7 @@ formValues.length > 0 && formValues.map((item,index)=>
 <View style={{flexDirection:'row',alignItems:'center'}}>
   
   <RadioButton
+  color='#1c75bc'
       value="HK"
       status={ item?.route === 'HK' ? 'checked' : 'unchecked' }
       onPress={() => handleChange(index, 'route',"HK")}

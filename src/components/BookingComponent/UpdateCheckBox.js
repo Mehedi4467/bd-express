@@ -7,38 +7,38 @@ export default function UpdateCheckBox({SpecialPacking,setSpecialPacking,Product
   return (
     <View style={{flexDirection:'row',flexWrap: 'wrap',width:'100%'}}>    
     <View style={{flexDirection:'row',justifyContent:'center',alignItems:'center'}}>
-    <Checkbox  status={ProductInspection?.status ? "checked" :"unchecked" }  onPress={()=>setProductInspection({
+    <Checkbox color='#1c75bc' status={ProductInspection?.status ? "checked" :"unchecked" }  onPress={()=>setProductInspection({
       name:'Product Inspection',
       status:!ProductInspection?.status 
     })} />
-        <Text>Product Inspection</Text>
+        <Text style={{color:'black'}}>Product Inspection</Text>
         
     </View>
     <View style={{flexDirection:'row',justifyContent:'center',alignItems:'center'}}>
-    <Checkbox status={PackedbyWarehouse?.status ?  "checked" : "unchecked"} onPress={()=>setPackedbyWarehouse({
+    <Checkbox color='#1c75bc' status={PackedbyWarehouse?.status ?  "checked" : "unchecked"} onPress={()=>setPackedbyWarehouse({
       name:'Packed by Warehouse' ,
       status: !PackedbyWarehouse?.status
     })} />
-      <Text>Packed by Warehouse</Text>
+      <Text style={{color:'black'}}>Packed by Warehouse</Text>
       
     </View>
     <View style={{flexDirection:'row',justifyContent:'center',alignItems:'center'}}>
-    <Checkbox status={SpecialPacking?.status ? "checked" : "unchecked" } onPress={()=>setSpecialPacking({
+    <Checkbox color='#1c75bc' status={SpecialPacking?.status ? "checked" : "unchecked" } onPress={()=>setSpecialPacking({
       name:'Special Packing',
       status:!SpecialPacking?.status
     })} />
-        <Text>Special Packing</Text>
+        <Text style={{color:'black'}}>Special Packing</Text>
       
     </View>
     <View style={{flexDirection:'row',justifyContent:'center',alignItems:'center'}}>
-    <Checkbox status={payment?.status ? "checked" : "unchecked"}  onPress={()=>{
+    <Checkbox color='#1c75bc' status={payment?.status ? "checked" : "unchecked"}  onPress={()=>{
     setUpdateCheckBoxItem(!payment?.status ? true : false);
     setPayment({
         name:'Payment',
         status:!payment?.status
       })
     }}/>
-        <Text>Payment({payment?.amount || 0})</Text>
+        <Text style={{color:'black'}}>Payment({payment?.amount || 0})</Text>
         
     </View>
    

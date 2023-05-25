@@ -52,6 +52,7 @@ export default function GeneralBooking({input1,setInput1,checked,setChecked,extr
     <View>
       <View style={styles.inputContainer}>
       <TextInput
+      textColor="black"
         style={styles.input}
         placeholder="Scanned Tracking Number"
         value={input1}
@@ -101,10 +102,11 @@ export default function GeneralBooking({input1,setInput1,checked,setChecked,extr
                primaryData?.data?.shipping_company &&  primaryData?.data?.shipping_company?.map((item,index)=> <View key={index} style={{flexDirection:'row',alignItems:'center'}}>
                 <RadioButton
                   value={item?.shipping_mark}
+                  color='#1c75bc'
                   status={ checked === item?.shipping_mark ? 'checked' : 'unchecked' }
                   onPress={() => setChecked(item?.shipping_mark)}
                 />
-                <Text>{item?.company}</Text>
+                <Text style={{color:'black'}}>{item?.company}</Text>
                 </View>)
               }
         </View>
@@ -228,6 +230,7 @@ export default function GeneralBooking({input1,setInput1,checked,setChecked,extr
                   borderBottomRightRadius:5,
                   backgroundColor:'#fff'}}
                   placeholder="Shipping Mark"
+                  textColor="black"
                   value={shippingMark}
                   onChangeText={(text) => setShippingMark(text)}
                   onFocus={()=>setSuggestion(true)}

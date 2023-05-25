@@ -10,7 +10,7 @@ import { useEffect, useState } from 'react';
 // import LoadingScreen from './src/screens/LoadingScreen';
 import Shipment from './src/screens/Shipment';
 import Booking from './src/screens/Booking';
-import { Divider, Menu, Provider as PaperProvider } from 'react-native-paper';
+import {  Provider as PaperProvider } from 'react-native-paper';
 // import Icon from 'react-native-vector-icons/FontAwesome5';
 // import Icon from 'react-native-vector-icons/FontAwesome';
 // import { logOut } from './src/utility/LogOut';
@@ -63,7 +63,6 @@ useEffect(()=>{
 
 //   checkAuthentication();
 // }, [gobalLoader]);
-
 
 
   return (
