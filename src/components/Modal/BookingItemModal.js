@@ -69,14 +69,14 @@ export default function BookingItemModal({visible,setFormValues,formValues,openI
 
 
       <ScrollView >
-       <View style={{padding:20,marginTop:45}}>
+       <View style={{padding:20,marginTop:45,marginBottom:45}}>
             {
             ModalValue.map((item,index)=>    
             <View key={index} style={{borderWidth: 1,
               borderColor: '#00aeef',
               borderRadius: 10,
               padding: 10,
-              marginBottom:45
+              marginBottom:20
               }}>
         
               {
@@ -94,7 +94,7 @@ export default function BookingItemModal({visible,setFormValues,formValues,openI
               }
 
             <TextInput
-              style={{width:'100%',backgroundColor:'#fff',color:'black'}}
+              style={{width:'100%',backgroundColor:'#fff',color:'black',marginBottom:10}}
               mode="outlined"
               value={item?.item}
               label={`Item ${index+1}`}

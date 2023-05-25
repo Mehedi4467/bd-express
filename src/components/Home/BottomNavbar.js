@@ -38,12 +38,10 @@ export default function BottomNavbar({ setScannerClose, stopScanner,navigation }
          }else{
           navigation.navigate('Shipment', {name: 'Shipment'});
          }
-        
       }
       }>
         <Text style={{ color: 'white', fontSize: 16 }}>SHIPMENT</Text>
       </TouchableOpacity>
-
       <TouchableOpacity style={styles.logoContainer} onPress={handlePress}>
         <Image source={logo} style={styles.logo} />
       </TouchableOpacity>
