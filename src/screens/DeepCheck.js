@@ -17,7 +17,7 @@ const updateBooking = (trackingID,BookingID)=>{
             <View style={{marginVertical:10,marginHorizontal:10}}>
               {
                   route?.params?.data?.data?.result?.map((item,index)=><Card key={index} style={{marginBottom:10}}>
-                  <Card.Content style={{flexDirection:'row',justifyContent:'space-between'}}>
+                  <Card.Content style={{flexDirection:'row',justifyContent:'space-between',backgroundColor:'#fff'}}>
                   <View>
                     <Text variant="titleLarge" style={{marginBottom:5}}>Tracking ID : {item?.tracking_id}</Text>
                     <Text variant="titleLarge">Date : {item?.data}</Text>

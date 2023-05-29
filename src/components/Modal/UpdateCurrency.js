@@ -59,7 +59,7 @@ export default function UpdateCurrency({setVisiblecurrency,setPaymentCurrency,vi
             <Text style={{color:'#fff'}}>{userInfo?.country}</Text>
           </View>
           <TextInput
-            style={{width:'70%',height:45}}
+            style={{width:'70%',height:45,backgroundColor:'#fff'}}
             mode="outlined"
             label="Amount"
             textColor="black"

@@ -77,7 +77,7 @@ export default function GeneralBooking({input1,setInput1,checked,setChecked,extr
   }>
 
     {
-     country === "ALL" ?  primaryData?.data?.country_json?.map((item,index)=><Picker.Item  key={index} label={item.code} value={item.code} /> ) : <Picker.Item   label={country} value={country} />
+     country === "ALL" ?  primaryData?.data?.country_json?.map((item,index)=><Picker.Item  key={index} label={item?.code} value={item?.code} /> ) : <Picker.Item   label={country} value={country} />
     }
   
     </Picker>
