@@ -18,6 +18,9 @@ import ReturnModal from '../components/Modal/ReturnModal';
 import { submitReturnApi } from '../api/BookingApi/returnApi';
 import UpdateCurrency from '../components/Modal/UpdateCurrency';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import ExtraWorkPOPUp from '../components/Modal/ExtraWorkPOPUp';
+
+
 const MemoizedCartonComponent = React.memo(CartonUpdateBooking);
 
 
@@ -50,11 +53,14 @@ export default function UpdateBooking({route,navigation}) {
       const [returnError,setReturnError]=useState('');
       const [updateCheckBoxItem,setUpdateCheckBoxItem]=useState(false);
       const [extraWorkDatas,setExtraWorkDatas]=useState([])
-
       const [extraWorkData,setExtraWorkData]=useState([{
         name:'None',
         status:true,
       }]);
+
+      const [upadateBookingPopUp,setUpdateBookingPOpUP]=useState(false);
+
+      const [extraWrokStatus,setExtraWorkStatus]=useState('');
 
 
 // console.log(mainData)
@@ -90,7 +96,8 @@ export default function UpdateBooking({route,navigation}) {
     setExtraWork(z?.data?.primary_data?.extra_work?.id);
     setChecked(z?.data?.primary_data?.shipping_mark?.company_mark);
     setFormValues([...z?.data?.carton_data]);
-    setExtraWorkDatas(z?.data?.primary_data?.extra_work);
+    setExtraWorkDatas(z?.data?.primary_data?.extra_work?.work);
+    setExtraWorkStatus(z?.data?.primary_data?.extra_work?.status);
     // setMainData([...z?.data?.carton_data]);
 }
 
@@ -171,6 +178,10 @@ const auxData = async()=>{
   },[route?.params?.BookingID])
 
 
+
+
+
+
   const submitBookingData = async()=>{
     setLoading(true);
     const finatData = await UpdateFinalArray(formValues,route?.params?.BookingID);
@@ -236,6 +247,11 @@ const auxData = async()=>{
   
   }
 
+
+
+
+
+
   const submitReturnREson = async()=>{
     setREturnLoading(true);
     if(reason && route?.params?.trackingID){
@@ -288,6 +304,10 @@ const auxData = async()=>{
       {
         congoMsg &&  <Congo   setCongoMsg={setCongoMsg} navigation={navigation}></Congo>
       }
+
+      {
+        upadateBookingPopUp && <ExtraWorkPOPUp bookingId = {route?.params?.BookingID} upadateBookingPopUp={upadateBookingPopUp} setUpdateBookingPOpUP={setUpdateBookingPOpUP} submitBookingData={submitBookingData} ></ExtraWorkPOPUp>
+      }
  
 
     
@@ -334,7 +354,8 @@ const auxData = async()=>{
           justifyContent: 'center',
           width:"100%"
         }}
-        onPress={() => submitBookingData()}
+        // onPress={() => submitBookingData()}
+        onPress={() => extraWrokStatus === "complete" ? submitBookingData() : setUpdateBookingPOpUP(true)}
         >
         <Text style={{ color: 'white', fontSize: 16 }}>Update Booking</Text>
     </TouchableOpacity>
@@ -342,9 +363,6 @@ const auxData = async()=>{
     </View>
      </View>
     </View>
-
-
-
 
      {
        openReturnModal &&  <ReturnModal returnError={returnError} setReturnError={setReturnError} returnLoading={returnLoading} submitReturnREson={submitReturnREson} setReason={setReason} openReturnModal={openReturnModal} setReturnModal={setReturnModal}></ReturnModal>

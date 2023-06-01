@@ -14,7 +14,7 @@ const updateBooking = (trackingID,BookingID)=>{
           <View style={{backgroundColor:'#fff',position:'relative',zIndex:1}}>
                 <TopNavbar setIsNavOpen={setIsNavOpen} isNavOpen={isNavOpen} navigation={navigation}></TopNavbar>
           </View>
-            <View style={{marginVertical:10,marginHorizontal:10}}>
+            <View style={{marginVertical:10,marginHorizontal:10,backgroundColor:'#fff'}}>
               {
                   route?.params?.data?.data?.result?.map((item,index)=><Card key={index} style={{marginBottom:10}}>
                   <Card.Content style={{flexDirection:'row',justifyContent:'space-between',backgroundColor:'#fff'}}>

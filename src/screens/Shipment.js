@@ -8,6 +8,7 @@ import { verifyUserPath } from '../api/Auth/allPathVerify';
 import { pathLogOutApi } from '../api/Auth/pathLogOut';
 import TopNavbar from '../components/Home/TopNavbar';
 import LoadingScreen from '../screens/LoadingScreen';
+import ShipmentAddModal from '../components/Modal/ShipmentAddModal';
 const Shipment = ({navigation}) => {
   const [text, setText] = useState('');
   const [loading,setLoading]=useState(false);
@@ -19,6 +20,8 @@ const [addLoading,setAddLoading]=useState(false);
 const [UpdateData,setUpdateData]=useState(false);
 const [isNavOpen, setIsNavOpen] = useState(false);
 const [isLoading,setIsLoading]=useState(false);
+
+const [addShipment,SetAddShipment]=useState(false);
 
 const handleClick = async() => {
   setAddLoading(true);
@@ -44,8 +47,6 @@ if(newNumber){
 }else{
   setError(['Something want wrong!']);
 }
-
-
 
 };
 
@@ -124,15 +125,17 @@ const viewCarton = async(id)=>{
      </View> : 
     shipmentVeryfy === 'yes' ?
     <ScrollView style={{marginTop:20}}>
-<View style={{flexDirection: 'row',alignItems: 'center',justifyContent: 'flex-end'}}>
-{
+
+
+<   View style={{flexDirection: 'row',alignItems: 'center',justifyContent: 'flex-end'}}>
+      {
         addLoading ? <TouchableOpacity style={{flexDirection: 'row',alignItems: 'center',justifyContent: 'center',margin:8,backgroundColor:'#00aeef',padding:7,opacity:.5,borderRadius:25, padding:7,height:50,width:50}} >
         <ActivityIndicator size="small" color="#0000ff" />
-        </TouchableOpacity>: <TouchableOpacity style={{flexDirection: 'row',alignItems: 'center',justifyContent: 'center',margin:8,backgroundColor:'#00aeef',borderRadius:25, padding:7,height:50,width:50}}  onPress={handleClick}>
+        </TouchableOpacity>: <TouchableOpacity style={{flexDirection: 'row',alignItems: 'center',justifyContent: 'center',margin:8,backgroundColor:'#00aeef',borderRadius:25, padding:7,height:50,width:50}}  onPress={()=>SetAddShipment(true)}>
         <Icon style={{textAlign:'center'}}  name="plus-circle" size={20} color="white" />
          </TouchableOpacity>
       }
-</View>
+    </View>
       
       {
         totalData?.map((item,index)=><View key={index} style={{flexDirection: 'row',alignItems: 'center',justifyContent: 'space-between',padding:10,backgroundColor:'white',margin:8}}>
@@ -171,7 +174,9 @@ loading ? <TouchableOpacity style={styles.buttonActive} >
   
     }
 
-  
+  {
+    addShipment && <ShipmentAddModal addShipment={addShipment} handleClick={handleClick} SetAddShipment={SetAddShipment} ></ShipmentAddModal>
+  }
   
 </>
 

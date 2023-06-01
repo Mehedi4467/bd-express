@@ -29,15 +29,6 @@ let handleChange = (i, name,value) => {
   
 };
 
-
-// const onFocusView = (inputIndex)=>{
-
-//   scrollViewRef.current.scrollTo({ x: 0, y: 0, animated: true });
-//   console.log(inputRef.current.setNativeProps())
-// }
-
-
-
   return (
     <View>
       <View style={{flexDirection:'row',alignItems:'center',width:'100%'}}>

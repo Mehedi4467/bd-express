@@ -7,17 +7,14 @@ const Congo = ({navigation,setCongoMsg}) => {
   const hideDialog = () => setVisible(false);
 
   return (
-    <Portal>
-      <Dialog visible={visible} dismissable={!visible} onDismiss={visible}>
-        <View style={{padding:10}}>
+    <Portal >
+      <Dialog style={{backgroundColor:'#fff'}} visible={visible} dismissable={!visible} onDismiss={visible}>
+        <View style={{padding:10,backgroundColor:'#fff'}}>
         <Image source={congo} style={{width:'100%',height:200}} />
 
-        <Text style={{fontWeight:800,marginTop:-30,textAlign: 'center'}}>You Have Earn 1 Coin</Text>
+        <Text style={{fontWeight:800,marginTop:-30,textAlign: 'center',color:'black'}}>You Have Earn 1 Coin</Text>
         </View>
-
-      
         <Dialog.Actions>
-          {/* <Button onPress={() => console.log('Cancel')}>Cancel</Button> */}
           <Button onPress={() => {
             hideDialog();
             navigation.navigate('Home');

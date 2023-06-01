@@ -6,7 +6,6 @@ import CheckBoxItem from './CheckBoxItem';
 import UpdateCheckBox from './UpdateCheckBox';
 
 export default function GeneralUpdateBooking({input1,setInput1,checked,setChecked,extraWork,setExtraWork,shippingMark,setShippingMark,Shipment,setShipment,primaryData,setPaymentCurrency,country,setCountry,paymentCurrency,setPayment,payment,setPackedbyWarehouse,PackedbyWarehouse,setProductInspection,ProductInspection,setSpecialPacking,SpecialPacking,updateCheckBoxItem,setUpdateCheckBoxItem}) {
-  // console.log('dada',payment)
     const [countrySelect, setcountrySelect] = useState(country || '');
     const [suggestion,setSuggestion]=useState(false);
     const [selectedLanguage, setSelectedLanguage] = useState(Shipment || '');
@@ -15,8 +14,6 @@ export default function GeneralUpdateBooking({input1,setInput1,checked,setChecke
       const data = value?.filter(data=> data?.client && data?.client.toLowerCase().includes(shippingMark.toLowerCase()))
       setSuggestionData(data)
     }
-// console.log(primaryData?.data)
-
     useEffect(()=>{
         shippingMark && primaryData?.data?.shipping_mark_suggestion?.suggestion &&  suggestionData(primaryData?.data?.shipping_mark_suggestion?.suggestion)
       },[shippingMark])

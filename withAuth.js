@@ -9,7 +9,6 @@ import LoginScreen from './src/screens/LoginScreen';
 
 const withAuth = (Component) => {
   const AuthenticatedComponent = (props) => {
-    // console.log(props)
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
 
